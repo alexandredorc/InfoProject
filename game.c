@@ -2,6 +2,6 @@
 
 int main() { 
 
-        printf ("Hello, World!\n"); 
+        printf ("This is the new project about labyrinte!\n"); 
         return 0;
 }

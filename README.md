@@ -6,33 +6,33 @@ Alexandre DORCIVAL
 
 #Stages: 
 
-#definition des objets:
-  le plateau
-    matrice de tuiles
-    fonciton de définition
-    listes colones fixe 
-    listes ligne fixe
-  les tuiles
-    gerer les murs / directions
-    la proportion de tuiles (- T + L)
-    tuiles fixe ou mobile
-  les joueurs
-    conditions de victoire (retourner a ca case apres toutes les cartes)
-    trouver toutes les case que l'on peux acceder
-    déplacement du joueur:
-        textuel(methode basic non opti)
-        déplacement clé directionnel
-        déplacement au cli (opti)
-  les trésors
-    afficher une seule cartes
-    garder trace des cartes precedentes
-#definition des règles:
-  pousser
-  règles de déplacement
-      les tuiles fixes
-      annuler action
- #affichage:
-    affichage ASCII
-    affichage console pix (opt)
-    affichage Graph OpenGL SDL (opt)
+#definition des objets:<br>
+  le plateau<br>
+    matrice de tuiles<br>
+    fonciton de définition<br>
+    listes colones fixe <br>
+    listes ligne fixe<br>
+  les tuiles<br>
+    gerer les murs / directions<br>
+    la proportion de tuiles (- T + L)<br>
+    tuiles fixe ou mobile<br>
+  les joueurs<br>
+    conditions de victoire (retourner a ca case apres toutes les cartes)<br>
+    trouver toutes les case que l'on peux acceder<br>
+    déplacement du joueur:<br>
+        textuel(methode basic non opti)<br>
+        déplacement clé directionnel<br>
+        déplacement au cli (opti)<br>
+  les trésors<br>
+    afficher une seule cartes<br>
+    garder trace des cartes precedentes<br>
+#definition des règles:<br>
+  pousser<br>
+  règles de déplacement<br>
+      les tuiles fixes<br>
+      annuler action<br>
+ #affichage:<br>
+    affichage ASCII<br>
+    affichage console pix (opt)<br>
+    affichage Graph OpenGL SDL (opt)<br>
     

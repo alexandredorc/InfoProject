@@ -9,7 +9,7 @@ Alexandre DORCIVAL
 #definition des objets:<br>
   le plateau<br>
     matrice de tuiles<br>
-    fonciton de définition<br>
+    fonction de définition<br>
     listes colones fixe <br>
     listes ligne fixe<br>
   les tuiles<br>

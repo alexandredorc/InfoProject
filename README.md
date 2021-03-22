@@ -1,2 +1,3 @@
 # InfoProject
-projet d'info
+projet d'info:
+Guillaume FAURE

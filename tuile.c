@@ -8,12 +8,14 @@ struct tuile{
     bool passage
 };
 
+typedef struct tuile tuile;
+
 /*struct table{
     tuile *tuiles;
 };*/
 
-bool * init_Tuiles(bool bas, bool haut, bool droite, bool gauche){
-        static bool tuile[9];
+void init_Tuiles(bool bas, bool haut, bool droite, bool gauche){
+        bool * tuile =malloc(9*sizeof(bool));
         for (int i=0;i<9;i++){
             tuile[i]=0;
         }
@@ -29,7 +31,8 @@ bool * init_Tuiles(bool bas, bool haut, bool droite, bool gauche){
                 printf("\n");
         }
         printf("\n");
-        return tuile;
+        free()
+        return 0;
 }
 
 int main(){

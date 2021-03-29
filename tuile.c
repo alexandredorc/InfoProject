@@ -5,7 +5,7 @@ struct tuile{
     bool mobile;
     int x;
     int y;
-    bool passage
+    bool passage;
 };
 
 typedef struct tuile tuile;

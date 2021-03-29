@@ -9,6 +9,3 @@ struct tuiles{
     bool direction[4];//[haut,droite,bas,gauche]
 };
 typedef struct tuiles tuiles;
-
-
-

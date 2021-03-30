@@ -57,5 +57,6 @@ int main() {
         printf("%s\n",nom);
         //startgame(G);
         endgame(G);
+        plateau *p=initplat_alloc(7);
         return 0;
 }

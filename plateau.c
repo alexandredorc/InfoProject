@@ -6,11 +6,13 @@
 
 plateau* initplat_alloc(const int taille)
 {
-    plateau *res = malloc(sizeof(*res));
+    plateau *res = malloc(sizeof(res));
     res->taille=taille;
-    res->grille = malloc(taille*sizeof(*res->grille));
-    for(int i=0; i<taille;i++){
-        res->grille[i] = malloc(taille*sizeof(*res->grille[i]));
+    res->tuiles = malloc((taille*taille+1)*sizeof(*res->tuiles));
+    res->grille=malloc(sizeof *res->grille * taille);
+    for (int i = 0; i < taille; i++)
+    {
+        res->grille[i] = malloc(sizeof **res->grille * taille);
     }
     res->ligne_mobile = malloc(taille*sizeof(bool));
     res->colonne_mobile = malloc(taille*sizeof(bool));
@@ -78,31 +80,8 @@ plateau deplacementhorizontal(plateau p, int ligne, bool direction){
     }
 }*/
 
-void showPlateau(plateau p){
-    for (int i=0;i<TAILLE;i++){
-        for (int k=0;k>3;k++){
-            for (int j=0;i<TAILLE;j++){
-                for (int l=0;l<3;l++){
-                    if ((l+3*k)==1){
-                        printf("%d  ",p.grille[i][j].direction[0]);
-                    }
-                    if ((l+3*k)==4){
-                        printf("1  ");
-                    }
-                    if ((l+3*k)==3){
-                        printf("%d  ",p.grille[i][j].direction[1]);
-                    }
-                    if ((l+3*k)==5){
-                        printf("%d  ",p.grille[i][j].direction[2]);
-                    }
-                    if ((l+3*k)==7){
-                        printf("%d  ",p.grille[i][j].direction[3]);
-                    }
-                    else{
-                        printf("0  ");
-                    }
-                }
-            }
-        }
+void showPlateau(plateau* p){
+    for (int i=0;i<p->taille*p->taille+1;i++){
+        
     }
 }

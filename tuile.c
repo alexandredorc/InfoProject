@@ -1,19 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include "headers/tuiles.h"
 
-struct tuile {
-    bool mobile;
-    int x;
-    int y;
-    bool passage
-};
-
-/*struct table{
-    tuile *tuiles;
-};*/
-
-bool * init_Tuiles(bool bas, bool haut, bool droite, bool gauche)
-{
+bool * init_Tuiles(bool bas, bool haut, bool droite, bool gauche){
         static bool tuile[9];
         for (int i=0;i<9;i++){
             tuile[i]=0;
@@ -33,11 +22,3 @@ bool * init_Tuiles(bool bas, bool haut, bool droite, bool gauche)
         return tuile;
 }
 
-int main()
-{
-    init_Tuiles(1,1,1,1);
-    init_Tuiles(0,0,1,1);
-    init_Tuiles(1,1,0,0);
-    init_Tuiles(0,0,0,0);
-    return 0;
-}

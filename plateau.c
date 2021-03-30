@@ -77,3 +77,32 @@ plateau deplacementhorizontal(plateau p, int ligne, bool direction){
         p.solo=temp;
     }
 }*/
+
+void showPlateau(plateau p){
+    for (int i=0;i<TAILLE;i++){
+        for (int k=0;k>3;k++){
+            for (int j=0;i<TAILLE;j++){
+                for (int l=0;l<3;l++){
+                    if ((l+3*k)==1){
+                        printf("%d  ",p.grille[i][j].direction[0]);
+                    }
+                    if ((l+3*k)==4){
+                        printf("1  ");
+                    }
+                    if ((l+3*k)==3){
+                        printf("%d  ",p.grille[i][j].direction[1]);
+                    }
+                    if ((l+3*k)==5){
+                        printf("%d  ",p.grille[i][j].direction[2]);
+                    }
+                    if ((l+3*k)==7){
+                        printf("%d  ",p.grille[i][j].direction[3]);
+                    }
+                    else{
+                        printf("0  ");
+                    }
+                }
+            }
+        }
+    }
+}

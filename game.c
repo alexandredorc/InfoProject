@@ -1,8 +1,14 @@
 #include <stdio.h> 
-#include "tuiles.h"
-int main() { 
+#include <stdlib.h>
+#include <stdbool.h>
+#include "headers/plateau.h"
 
-        printf ("This is the new project about labyrinte!\n"); 
-        printf ("ntm ça fonctionne");
+int main()
+{ 
+        printf("debut\n");
+        plateau* p = initplat_alloc(7);
+        printf("milieu\n");
+        free_plat(p);
+        printf("fin\n");
         return 0;
 }

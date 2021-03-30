@@ -1,10 +1,12 @@
+#include "tuiles.h"
 #ifndef _PLATEAU_
 #define _PLATEAU_
 
 struct plateau{
     int taille; 
-    struct tuile **grille;
-    struct tuile *solo;
+    int** grille;
+    tuile* tuiles;
+    int solo;
     bool *ligne_mobile;
     bool *colonne_mobile;
 };

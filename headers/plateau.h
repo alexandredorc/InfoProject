@@ -1,6 +1,6 @@
 #ifndef _PLATEAU_
 #define _PLATEAU_
-#include "tuiles.h"
+#include "tuile.h"
 
 struct plateau{
     int taille; 

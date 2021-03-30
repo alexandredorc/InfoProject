@@ -1,11 +1,12 @@
-#include <stdbool.h>
 #include <stdio.h>
-#include "headers/tuiles.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include "headers/tuile.h"
 
 
 tuile* inittuile_alloc()
 {
-    tuile *res = malloc(sizeof(res));
+    tuile* res = malloc(sizeof(res));
     res->x = malloc(sizeof(int));
     res->y = malloc(sizeof(int));
     res->mobile = malloc(sizeof(bool));
@@ -17,7 +18,7 @@ tuile* inittuile_alloc()
 }
 
 
-void free_plat(tuile* t)
+void free_tuile(tuile* t)
 {
     free(t->x);
     free(t->y);
@@ -27,4 +28,6 @@ void free_plat(tuile* t)
     }
     free(t);
 }
+
+
 

@@ -56,6 +56,7 @@ void endgame(Game *G){
 }
 
 void afficher(Game *G){
+	int contraste=0;
 	int taille=G->plateau->taille;
 	tuile * tuiles=G->plateau->tuiles;
 	int ** grille=G->plateau->grille;
@@ -73,21 +74,41 @@ void afficher(Game *G){
 					
 				}
 				else if(a!=1 && b!=1){ //mur
-					if (tuiles[pos].mobile){
-						printf("\033[100m");
+					if (contraste%2==0){
+						if (tuiles[pos].mobile){
+							printf("\033[107m");
+						}
+						else{
+							printf("\033[99m");
+						}
+						printf("  ");
 					}
 					else{
-						printf("\033[99m");
+						if (tuiles[pos].mobile){
+							printf("\033[100m");
+						}
+						else{
+							printf("\033[99m");
+						}
+						printf("  ");
 					}
-					printf("  ");
-
 				}
 				else{ //route
-					if (tuiles[pos].mobile){
+					if (contraste%2==0){
+						if (tuiles[pos].mobile){
 						printf("\033[100m");
+						}
+						else{
+							printf("\033[99m");
+						}
 					}
-					else{
-						printf("\033[99m");
+					else {
+						if (tuiles[pos].mobile){
+						printf("\033[107m");
+						}
+						else{
+							printf("\033[99m");
+						}
 					}
 					if(i%3==0 && j%3==1 && tuiles[pos].passage[0]){
 						printf("\033[43m");
@@ -105,6 +126,7 @@ void afficher(Game *G){
 					printf("  ");
 				}
 				printf("\033[m");
+				contraste += 1;
 			}
 			else{
 				printf("  ");

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "headers/tuiles.h"
+#include "headers/tuile.h"
 #include "headers/plateau.h"
 
 plateau* initplat_alloc(const int taille)

@@ -6,6 +6,7 @@
 struct Joueur
 {
         char nom[N];
+        int score;
 };
 typedef struct Joueur Joueur;
 

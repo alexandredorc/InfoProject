@@ -7,5 +7,5 @@ struct tuile{
 };
 typedef struct tuile tuile;
 
-void init_Tuiles(tuile *tuile,char tresor,bool mobile,bool haut,bool droite,bool bas,bool gauche);
+void init_Tuiles(tuile *tuile,char tresor,bool mobile);
 #endif

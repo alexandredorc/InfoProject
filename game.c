@@ -50,6 +50,7 @@ void resultat(Game *G){
 void endgame(Game *G){
 	resultat(G);
 	free(G->joueurs);
+        free_plat(G->plateau);
 	free(G);
 	printf("fin du programme\n");
 }

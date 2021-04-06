@@ -16,7 +16,6 @@ plateau* initplat_alloc(const int taille)
     }
     res->ligne_mobile = malloc(taille*sizeof(bool));
     res->colonne_mobile = malloc(taille*sizeof(bool));
-    res->solo = malloc(sizeof(*res->solo));
     return res;
 }
 
@@ -31,51 +30,51 @@ void free_plat(plateau* p)
     free(p->grille);
     free(p);
 }
-/*
+
 plateau deplacementvertical(plateau* p, const int colonne, const bool direction){
     //direction 0=vers le bas, 1=le haut
-    tuiles temp;
-    if (direction==0){
+    int temp;
+    if (direction==1){
         temp=p->grille[colonne][0];
         
-        for (int i=0;i<6;i++){
+        for (int i=0;i<p->taille;i++){
             p->grille[colonne][i]=p->grille[colonne][i+1];
         }
-        p->grille[colonne][7]=p->solo;
+        p->grille[colonne][p->taille]=p->solo;
         p->solo=temp;
     }
 
-    if (direction==1){
-        temp=p->grille[colonne][7];
+    else if (direction==0){
+        temp=p->grille[colonne][p->taille];
         
-        for (int i=0;i<6;i++){
-            p->grille[colonne][i-1]=p->grille[colonne][i];
+        for (int i=p->taille;i>0;i--){
+            p->grille[colonne][i]=p->grille[colonne][i-1];
         }
-        p->grille[colonne][7]=p->solo;
+        p->grille[colonne][0]=p->solo;
         p->solo=temp;
     }
 }
 
-plateau deplacementhorizontal(plateau p, int ligne, bool direction){
+plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction){
     //direction 0=vers la droite, 1=la gauche
-    tuiles temp;
-    if (direction==0){
-        temp=p.grille[7][ligne];
+    int temp;
+    if (direction==1){
+        temp=p->grille[p->taille][ligne];
         
-        for (int i=1;i<=7;i++){
-            p.grille[ligne][i]=p.grille[ligne][i-1];
+        for (int i=p->taille;i>0;i--){
+            p->grille[ligne][i]=p->grille[ligne][i-1];
         }
-        p.grille[ligne][0]=p.solo;
-        p.solo=temp;
+        p->grille[ligne][0]=p->solo;
+        p->solo=temp;
     }
 
-    if (direction==1){
-        temp=p.grille[ligne][0];
+    else if (direction==1){
+        temp=p->grille[ligne][0];
         
-        for (int i=7;i>=1;i--){
-            p.grille[ligne][i]=p.grille[ligne][i+1];
+        for (int i=0;i<p->taille;i++){
+            p->grille[ligne][i]=p->grille[ligne][i+1];
         }
-        p.grille[ligne][7]=p.solo;
-        p.solo=temp;
+        p->grille[ligne][p->taille]=p->solo;
+        p->solo=temp;
     }
-}*/
+}

@@ -1,3 +1,3 @@
 default: 
-	gcc game.c -o game
+	gcc *.c -o game
 	./game

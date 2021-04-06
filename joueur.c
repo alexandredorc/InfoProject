@@ -4,6 +4,3 @@
 #include "headers/joueur.h"
 #include "headers/game.h"
 #define N 30
-
-
-

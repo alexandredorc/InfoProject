@@ -13,8 +13,8 @@ int main() {
         char nom[N];
         strcpy(nom, G->joueurs[0].nom);
         afficher(G);
-        //⊛ ⊗ ╔╗ ╠╕ ╤╛ ╠╗ ◠☰☰ ⎣⎤  ╬╪ ▒░ 
-        //startgame(G);
+        // ⊛ ⊗ ╔ ╗ ╠ ╕ ╤ ╛ ╠ ╗ ◠ ☰ ☰ ⎣ ⎤  ╬ ╪ ▒ ░ 
+        startgame(G);
         endgame(G);
         return 0;
 }

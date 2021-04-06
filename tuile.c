@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include "headers/tuile.h"
@@ -29,5 +29,5 @@ void free_tuile(tuile* t)
     free(t);
 }
 
-
+*/
 

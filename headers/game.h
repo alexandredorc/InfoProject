@@ -26,4 +26,6 @@ void endgame(Game *G);
 
 void afficher(Game *G);
 
+void incr_score(Joueur *j);
+
 #endif

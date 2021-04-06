@@ -7,7 +7,10 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
-
+#define COULEUR_MUR1 "\033[48;5;94m"
+#define COULEUR_MUR2 "\033[48;5;95m"
+#define COULEUR_MUR_FIXE "\033[48;5;172m"
+#define COULEUR_PASSAGE "\033[48;5;15m"
 
 
 void create_joueurs(Game *G){
@@ -70,25 +73,25 @@ void afficher(Game *G){
 			if (x>=1 && x<=taille && y>=1 && y<=taille){  
 				int pos=grille[x-1][y-1];
 				if(a==1 && b==1){
-					printf("\033[43m\033[30m%c \033[m",tuiles[pos].tresor);
+					printf(COULEUR_PASSAGE "\033[30m%c \033[m",tuiles[pos].tresor);
 					
 				}
 				else if(a!=1 && b!=1){ //mur
 					if (contraste%2==0){
 						if (tuiles[pos].mobile){
-							printf("\033[107m");
+							printf(COULEUR_MUR2);
 						}
 						else{
-							printf("\033[99m");
+							printf(COULEUR_MUR_FIXE);
 						}
 						printf("  ");
 					}
 					else{
 						if (tuiles[pos].mobile){
-							printf("\033[100m");
+							printf(COULEUR_MUR1);
 						}
 						else{
-							printf("\033[99m");
+							printf(COULEUR_MUR_FIXE);
 						}
 						printf("  ");
 					}
@@ -96,32 +99,32 @@ void afficher(Game *G){
 				else{ //route
 					if (contraste%2==0){
 						if (tuiles[pos].mobile){
-						printf("\033[100m");
+						printf(COULEUR_MUR1);
 						}
 						else{
-							printf("\033[99m");
+							printf(COULEUR_MUR_FIXE);
 						}
 					}
 					else {
 						if (tuiles[pos].mobile){
-						printf("\033[107m");
+						printf(COULEUR_MUR2);
 						}
 						else{
-							printf("\033[99m");
+							printf(COULEUR_MUR_FIXE);
 						}
 					}
 					if(i%3==0 && j%3==1 && tuiles[pos].passage[0]){
-						printf("\033[43m");
+						printf(COULEUR_PASSAGE);
 					}
 					else if(i%3==1 && j%3==2 && tuiles[pos].passage[1]){
-						printf("\033[43m");
+						printf(COULEUR_PASSAGE);
 					}
 					else if(i%3==2 && j%3==1 && tuiles[pos].passage[2]){
-						printf("\033[43m");
+						printf(COULEUR_PASSAGE);
 					}
 					else if (i%3==1 && j%3==0 && tuiles[pos].passage[3])
 					{
-						printf("\033[43m");
+						printf(COULEUR_PASSAGE);
 					}
 					printf("  ");
 				}

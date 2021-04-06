@@ -1,27 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "headers/tuile.h"
+#include "headers/tuiles.h"
 #include "headers/plateau.h"
 
-plateau* initplat_alloc(const int taille)
+void initplat_alloc(plateau* P,int taille)
 {
-    plateau *res = malloc(sizeof(res));
-    res->taille=taille;
-    res->tuiles = malloc((taille*taille+1)*sizeof(*res->tuiles));
-    res->grille=malloc(sizeof *res->grille * taille);
-    for (int i = 0; i < taille; i++)
-    {
-        res->grille[i] = malloc(sizeof **res->grille * taille);
+    P->taille=taille;
+    P->tuiles = malloc(((taille*taille)+1)*sizeof(*P->tuiles));
+    P->grille=malloc(sizeof *P->grille * taille);
+	for (int i = 0; i < taille; i++)
+	{
+		P->grille[i] = malloc(sizeof **P->grille * taille);
+	}
+    int k=0;
+    for(int i = 0; i <taille;i++){
+        for(int j = 0; j <taille;j++){
+            P->grille[i][j]=k;
+            bool fix=true;
+            if(i%2!=0 && j%2!=0){
+                fix=false;
+            }
+            init_Tuiles(&(P->tuiles[k]),' ',fix,true,true,true,true);
+            k++;
+        }
     }
-    res->ligne_mobile = malloc(taille*sizeof(bool));
-    res->colonne_mobile = malloc(taille*sizeof(bool));
-    return res;
+    P->tuiles[7].tresor='o';
+    P->tuiles[9].tresor='g';
+    P->tuiles[9].passage[2]=false;
+    P->ligne_mobile = malloc(taille*sizeof(bool));
+    P->colonne_mobile = malloc(taille*sizeof(bool));
+    fix(P);
+}
+
+void fix(plateau *P ){
+    for(int i=0;i<P->taille;i++){
+        P->colonne_mobile[i]=true;
+        P->ligne_mobile[i]=true;  
+    }
+    for(int i=0;i<P->taille;i++){
+        for(int j=0;j<P->taille;j++){
+            if(!P->tuiles[P->grille[i][j]].mobile){
+                P->colonne_mobile[j]=false;
+                P->ligne_mobile[i]=false;
+            }
+        }
+    }
+    
 }
 
 void free_plat(plateau* p)
 {
-    free(p->solo);
     free(p->ligne_mobile);
     free(p->colonne_mobile);
     for(int i=0;i<p->taille;i++){
@@ -29,52 +58,4 @@ void free_plat(plateau* p)
     }
     free(p->grille);
     free(p);
-}
-
-plateau deplacementvertical(plateau* p, const int colonne, const bool direction){
-    //direction 0=vers le bas, 1=le haut
-    int temp;
-    if (direction==1){
-        temp=p->grille[colonne][0];
-        
-        for (int i=0;i<p->taille;i++){
-            p->grille[colonne][i]=p->grille[colonne][i+1];
-        }
-        p->grille[colonne][p->taille]=p->solo;
-        p->solo=temp;
-    }
-
-    else if (direction==0){
-        temp=p->grille[colonne][p->taille];
-        
-        for (int i=p->taille;i>0;i--){
-            p->grille[colonne][i]=p->grille[colonne][i-1];
-        }
-        p->grille[colonne][0]=p->solo;
-        p->solo=temp;
-    }
-}
-
-plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction){
-    //direction 0=vers la droite, 1=la gauche
-    int temp;
-    if (direction==1){
-        temp=p->grille[p->taille][ligne];
-        
-        for (int i=p->taille;i>0;i--){
-            p->grille[ligne][i]=p->grille[ligne][i-1];
-        }
-        p->grille[ligne][0]=p->solo;
-        p->solo=temp;
-    }
-
-    else if (direction==1){
-        temp=p->grille[ligne][0];
-        
-        for (int i=0;i<p->taille;i++){
-            p->grille[ligne][i]=p->grille[ligne][i+1];
-        }
-        p->grille[ligne][p->taille]=p->solo;
-        p->solo=temp;
-    }
 }

@@ -2,6 +2,7 @@
 #define _GAME_
 
 #include "joueur.h"
+#include "plateau.h"
 #define N 30
 
 struct Game{
@@ -9,7 +10,7 @@ struct Game{
         int nbJoueurs;
         Joueur *joueurs;
         int actif;
-        //Plateau *plateau
+        plateau *plateau;
 }; 
 typedef struct Game Game;
 
@@ -22,5 +23,7 @@ void create_joueurs(Game *G);
 void resultat(Game *G);
 
 void endgame(Game *G);
+
+void afficher(Game *G);
 
 #endif

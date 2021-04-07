@@ -11,7 +11,7 @@ struct Joueur
 };
 typedef struct Joueur Joueur;
 
-
+void incr_score(Joueur *j);
 
 
 

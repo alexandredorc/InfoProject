@@ -4,6 +4,7 @@ struct tuile{
     bool mobile;
     bool * passage;
     char tresor;
+    int couleur;
 };
 typedef struct tuile tuile;
 

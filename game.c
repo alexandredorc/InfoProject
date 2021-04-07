@@ -7,10 +7,10 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
-#define COULEUR_MUR1 "\033[48;5;94m"
-#define COULEUR_MUR2 "\033[48;5;95m"
-#define COULEUR_MUR_FIXE "\033[48;5;172m"
-#define COULEUR_PASSAGE "\033[48;5;15m"
+#define COULEUR_MUR1 "\033[48;5;20m"
+#define COULEUR_MUR2 "\033[48;5;21m"
+#define COULEUR_MUR_FIXE "\033[48;5;17m"
+#define COULEUR_PASSAGE "\033[48;5;252m"
 
 
 void create_joueurs(Game *G){
@@ -43,9 +43,6 @@ int startgame(Game *G){
 	return 0; 
 }
 
-void incr_score(Joueur *j){
-    j->score+=1;
-}
 
 Game *propgame(){
 	Game *G=malloc(sizeof(Game));
@@ -88,11 +85,17 @@ void afficher(Game *G){
 			if (x>=1 && x<=taille && y>=1 && y<=taille){  
 				int pos=grille[x-1][y-1];
 				if(a==1 && b==1){
-					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[pos].tresor);
+					
+						printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[pos].tresor);
+					
+					
 					
 				}
 				else if(a!=1 && b!=1){ //mur
-					if (contraste%2==0){
+					if(TabTuiles[pos].couleur!=-1 ){
+						printf( "\033[48;5;%dm\033[30m  \033[m",TabTuiles[pos].couleur);
+					}
+					else if (contraste%2==0){
 						if (TabTuiles[pos].mobile){
 							printf(COULEUR_MUR2);
 						}
@@ -113,7 +116,7 @@ void afficher(Game *G){
 					}
 				}
 				else{ //route
-
+					
 					if (contraste%2==0){
 						if (TabTuiles[pos].mobile){
 						printf(COULEUR_MUR1);
@@ -130,6 +133,9 @@ void afficher(Game *G){
 						else{
 							printf(COULEUR_MUR_FIXE);
 						}
+					}
+					if(TabTuiles[pos].couleur!=-1 ){
+						printf( "\033[48;5;%dm",TabTuiles[pos].couleur);
 					}
 					if(i%3==0 && j%3==1 && TabTuiles[pos].passage[0]){
 						printf(COULEUR_PASSAGE);

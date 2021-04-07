@@ -21,7 +21,7 @@ void initplat_alloc(plateau* P,int taille)
             if(i%2!=0 && j%2!=0){
                 fix=false;
             }
-            init_Tuiles(&(P->tuiles[k]),' ',fix,true,true,true,true);
+            init_Tuiles(&(P->tuiles[k]),' ',fix);
             k++;
         }
     }

@@ -1,15 +1,77 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h> 
+#include <time.h>
 #include "headers/tuiles.h"
 
-void init_Tuiles(tuile *tuile,char tresor, bool mobile,bool haut,bool droite,bool bas,bool gauche){
+int randomint (int k)
+{
+   static int first = 0;
+   
+   if (first == 0)
+   {
+      srand (time (NULL));
+      first = 1;
+   }
+   return (rand ()%k);
+}
+
+void tourner(tuile *t,int k,bool sens)
+{
+//sens==true->sens des aiguilles d'une montre
+//sens==false->sens inverse des aiguilles d'une montre
+        bool ndir[4];
+        if (sens==false){
+                for(int i=0;i<4;i++){
+                ndir[i]=t->passage[(i+k)%4];
+                }
+        }
+        if (sens==true){
+                for(int i=0;i<4;i++){
+                ndir[i]=t->passage[(i-k+4)%4];
+                }
+        }
+        for(int i=0;i<4;i++){
+                 t->passage[i]= ndir[i];   
+        }
+}
+
+
+void init_Tuiles(tuile *tuile,char tresor, bool mobile)
+{
         tuile->passage=malloc(sizeof*(tuile->passage)*4);
-        tuile->passage[0]=haut;
-        tuile->passage[1]=droite;
-        tuile->passage[2]=bas;
-        tuile->passage[3]=gauche;
+        int forme = randomint(4);
+        int orientation = randomint(3);
+        if (forme==0){
+                tuile->passage[0]=false;
+                tuile->passage[1]=true;
+                tuile->passage[2]=false;
+                tuile->passage[3]=true;
+        }
+        if (forme==1){
+                tuile->passage[0]=true;
+                tuile->passage[1]=true;
+                tuile->passage[2]=false;
+                tuile->passage[3]=false;
+        }
+        if (forme==2){
+                tuile->passage[0]=true;
+                tuile->passage[1]=true;
+                tuile->passage[2]=true;
+                tuile->passage[3]=false;
+        }
+        if (forme==3){
+                tuile->passage[0]=true;
+                tuile->passage[1]=true;
+                tuile->passage[2]=true;
+                tuile->passage[3]=true;
+        }
+        tourner(tuile,orientation,true);
         tuile->mobile=mobile;
         tuile->tresor=tresor;
 }
 
+void free_tuile(tuile* t)
+{
+    free(t->passage);
+}

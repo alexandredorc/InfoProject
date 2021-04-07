@@ -4,7 +4,7 @@
 struct plateau{
     int taille; 
     int  **grille;
-    tuile *tuiles;
+    tuile *TabTuiles;
     int solo;
     bool *ligne_mobile;
     bool *colonne_mobile;
@@ -16,5 +16,7 @@ void fix(plateau *P);
 void initplat_alloc(plateau* P,int taille);
 
 void free_plat(plateau* p);
+
+void create_tresor(plateau* p);
 
 #endif

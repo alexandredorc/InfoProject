@@ -7,7 +7,7 @@
 void initplat_alloc(plateau* P,int taille)
 {
     P->taille=taille;
-    P->tuiles = malloc(((taille*taille)+1)*sizeof(*P->tuiles));
+    P->TabTuiles = malloc(((taille*taille)+1)*sizeof(*P->TabTuiles));
     P->grille=malloc(sizeof *P->grille * taille);
 	for (int i = 0; i < taille; i++)
 	{
@@ -21,13 +21,13 @@ void initplat_alloc(plateau* P,int taille)
             if(i%2!=0 && j%2!=0){
                 fix=false;
             }
-            init_Tuiles(&(P->tuiles[k]),' ',fix);
+            init_Tuiles(&(P->TabTuiles[k]),' ',fix);
             k++;
         }
     }
-    P->tuiles[7].tresor='o';
-    P->tuiles[9].tresor='g';
-    P->tuiles[9].passage[2]=false;
+    P->TabTuiles[7].tresor='o';
+    P->TabTuiles[9].tresor='g';
+    P->TabTuiles[9].passage[2]=false;
     P->ligne_mobile = malloc(taille*sizeof(bool));
     P->colonne_mobile = malloc(taille*sizeof(bool));
     fix(P);
@@ -40,7 +40,7 @@ void fix(plateau *P ){
     }
     for(int i=0;i<P->taille;i++){
         for(int j=0;j<P->taille;j++){
-            if(!P->tuiles[P->grille[i][j]].mobile){
+            if(!P->TabTuiles[P->grille[i][j]].mobile){
                 P->colonne_mobile[j]=false;
                 P->ligne_mobile[i]=false;
             }

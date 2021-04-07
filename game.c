@@ -14,22 +14,37 @@
 
 
 void create_joueurs(Game *G){
-		printf("entrer le nombre de joueurs: ");
-		scanf("%d", &(G->nbJoueurs));
+	printf("entrer le nombre de joueurs: ");
+	scanf("%d", &(G->nbJoueurs));
     Joueur *j=malloc(sizeof(Joueur)*G->nbJoueurs);
     for (int i = 0; i < G->nbJoueurs; i++)
-    {
+	{
 		printf("entrer le nom du joueur %d: ",i+1);
 		scanf("%s",j[i].nom);
+		
     }
+	
     G->joueurs=j;
+	G->joueurs[0].position=0;
 }
+
+
 
 int startgame(Game *G){
 	while(G->run){
-
+		int posJ=G->joueurs[G->actif].position;
+		if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
+			incr_score(&G->joueurs[G->actif]);
+			
+        
+    	}
 	}
+	
 	return 0; 
+}
+
+void incr_score(Joueur *j){
+    j->score+=1;
 }
 
 Game *propgame(){
@@ -61,7 +76,7 @@ void endgame(Game *G){
 void afficher(Game *G){
 	int contraste=0;
 	int taille=G->plateau->taille;
-	tuile * tuiles=G->plateau->tuiles;
+	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
 	for(int i=0;i<(taille+2)*3;i++){
 		for(int j=0;j<(taille+2)*3;j++){
@@ -73,21 +88,22 @@ void afficher(Game *G){
 			if (x>=1 && x<=taille && y>=1 && y<=taille){  
 				int pos=grille[x-1][y-1];
 				if(a==1 && b==1){
-					printf(COULEUR_PASSAGE "\033[30m%c \033[m",tuiles[pos].tresor);
+					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[pos].tresor);
 					
 				}
 				else if(a!=1 && b!=1){ //mur
 					if (contraste%2==0){
-						if (tuiles[pos].mobile){
+						if (TabTuiles[pos].mobile){
 							printf(COULEUR_MUR2);
 						}
 						else{
 							printf(COULEUR_MUR_FIXE);
 						}
 						printf("  ");
+
 					}
 					else{
-						if (tuiles[pos].mobile){
+						if (TabTuiles[pos].mobile){
 							printf(COULEUR_MUR1);
 						}
 						else{
@@ -97,32 +113,34 @@ void afficher(Game *G){
 					}
 				}
 				else{ //route
+
 					if (contraste%2==0){
-						if (tuiles[pos].mobile){
+						if (TabTuiles[pos].mobile){
 						printf(COULEUR_MUR1);
 						}
 						else{
 							printf(COULEUR_MUR_FIXE);
 						}
+
 					}
 					else {
-						if (tuiles[pos].mobile){
+						if (TabTuiles[pos].mobile){
 						printf(COULEUR_MUR2);
 						}
 						else{
 							printf(COULEUR_MUR_FIXE);
 						}
 					}
-					if(i%3==0 && j%3==1 && tuiles[pos].passage[0]){
+					if(i%3==0 && j%3==1 && TabTuiles[pos].passage[0]){
 						printf(COULEUR_PASSAGE);
 					}
-					else if(i%3==1 && j%3==2 && tuiles[pos].passage[1]){
+					else if(i%3==1 && j%3==2 && TabTuiles[pos].passage[1]){
 						printf(COULEUR_PASSAGE);
 					}
-					else if(i%3==2 && j%3==1 && tuiles[pos].passage[2]){
+					else if(i%3==2 && j%3==1 && TabTuiles[pos].passage[2]){
 						printf(COULEUR_PASSAGE);
 					}
-					else if (i%3==1 && j%3==0 && tuiles[pos].passage[3])
+					else if (i%3==1 && j%3==0 && TabTuiles[pos].passage[3])
 					{
 						printf(COULEUR_PASSAGE);
 					}

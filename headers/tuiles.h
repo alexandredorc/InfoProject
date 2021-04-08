@@ -8,5 +8,7 @@ struct tuile{
 };
 typedef struct tuile tuile;
 
+void tourner(tuile *t,int k,bool sens);
+
 void init_Tuiles(tuile *tuile,char tresor,bool mobile);
 #endif

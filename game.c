@@ -7,10 +7,17 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
-#define COULEUR_MUR1 "\033[48;5;20m"
+#define COULEUR_MUR1 "\033[48;5;18m"
 #define COULEUR_MUR2 "\033[48;5;21m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
+#define EFFACER "clear"
+
+void resetsolo(plateau *P){
+	P->solopos[0]=3;
+	P->solopos[1]=1;
+	P->solopos[2]=1;
+}
 
 
 void create_joueurs(Game *G){
@@ -28,16 +35,136 @@ void create_joueurs(Game *G){
 	G->joueurs[0].position=0;
 }
 
+int menusolo(Game *G){
+	printf("1 top, 2 right, 3 down, 4 left\n");
+	int res; 
+	scanf("%d",&res);
+	switch (res)
+		{
+		case 1:
+			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]>1)
+			{
+				G->plateau->solopos[0]-=1;
+			}
+			else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
+			{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[2]=1;
+				}
+				else{
+					G->plateau->solopos[2]=0;
+				}
+			}
+			else {
+				if (G->plateau->solopos[2]==0){
+					
+					G->plateau->solopos[0]=1;
+				}
+				else{
+					
+					G->plateau->solopos[0]=G->plateau->taille;
+				}
+				G->plateau->solopos[1]=0;
+				G->plateau->solopos[2]=0;
+			}
+			break;
+		case 2:
+			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]<G->plateau->taille)
+			{
+				G->plateau->solopos[0]+=1;
+			}
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0)
+			{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[2]=1;
+				}
+				else{
+					G->plateau->solopos[2]=0;
+				}
+			}
+			else{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[0]=1;
+				}
+				else{
+					G->plateau->solopos[0]=G->plateau->taille;
+				}
+				G->plateau->solopos[1]=1;
+				G->plateau->solopos[2]=1;
+			}
+			break;
+		case 3:
+			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]<G->plateau->taille)
+			{
+				G->plateau->solopos[0]+=1;
+			}
+			else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
+			{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[2]=1;
+				}
+				else{
+					G->plateau->solopos[2]=0;
+				}
+			}
+			else{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[0]=1;
+				}
+				else{
+					G->plateau->solopos[0]=G->plateau->taille;
+				}
+				G->plateau->solopos[1]=0;
+				G->plateau->solopos[2]=1;
+			}
+			break;
+		case 4:
+			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]>1)
+			{
+				G->plateau->solopos[0]-=1;
+			}
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1)
+			{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[2]=1;
+				}
+				else{
+					G->plateau->solopos[2]=0;
+				}
+				
+			}
+			else{
+				if (G->plateau->solopos[2]==0){
+					G->plateau->solopos[0]=1;
+				}
+				else{
+					G->plateau->solopos[0]=G->plateau->taille;
+				}
+				G->plateau->solopos[1]=1;
+				G->plateau->solopos[2]=0;
+			}
+			break;
 
+		default:
+			break;
+		}
+	return res;
+}
 
 int startgame(Game *G){
+	resetsolo(G->plateau);
 	while(G->run){
 		int posJ=G->joueurs[G->actif].position;
 		if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
-			incr_score(&G->joueurs[G->actif]);
-			
-        
+			incr_score(&(G->joueurs[G->actif]));        
     	}
+		system(EFFACER);
+		afficher(G);
+		int choix=menusolo(G);
+		
+		
+		
+		
 	}
 	
 	return 0; 
@@ -58,6 +185,7 @@ Game *propgame(){
 	return G;
 }
 
+
 void resultat(Game *G){
 	printf("fin de la partie\n");	
 }
@@ -70,32 +198,44 @@ void endgame(Game *G){
 	printf("fin du programme\n");
 }
 
+int *soloReal(plateau *P){
+	int *pos=malloc(sizeof(int)*2);
+	//[0] est la distance depuis 0;0 [1] si c'est une ligne ou colone [2] si c'est dans la col ou ligne oposé ou non
+	if(P->solopos[1]==1){
+		pos[0]=P->solopos[0];
+		pos[1]=P->solopos[2]*(P->taille+1);
+	}
+	else{
+		pos[1]=P->solopos[0];
+		pos[0]=P->solopos[2]*(P->taille+1);
+	}
+	return pos;
+}
+
 void afficher(Game *G){
 	int contraste=0;
 	int taille=G->plateau->taille;
 	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
+	int * soloposi= soloReal(G->plateau);
+	printf("%d %d\n",soloposi[0],soloposi[1]);
+	int solo=G->plateau->solo;
 	for(int i=0;i<(taille+2)*3;i++){
 		for(int j=0;j<(taille+2)*3;j++){
 			int x=i/3;
 			int y=j/3;
 			int a=i%3;
 			int b=j%3;
-			
-			if (x>=1 && x<=taille && y>=1 && y<=taille){  
+			if (x>=1 && x<=taille && y>=1 && y<=taille){
 				int pos=grille[x-1][y-1];
 				if(a==1 && b==1){
-					
-						printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[pos].tresor);
-					
-					
-					
+					printf(COULEUR_PASSAGE"\033[30m%c \033[m",TabTuiles[pos].tresor);
 				}
 				else if(a!=1 && b!=1){ //mur
 					if(TabTuiles[pos].couleur!=-1 ){
 						printf( "\033[48;5;%dm\033[30m  \033[m",TabTuiles[pos].couleur);
 					}
-					else if (contraste%2==0){
+					else if (x==G->plateau->solopos[0] && G->plateau->solopos[1]==1 || y==G->plateau->solopos[0] && G->plateau->solopos[1]==0){
 						if (TabTuiles[pos].mobile){
 							printf(COULEUR_MUR2);
 						}
@@ -103,7 +243,6 @@ void afficher(Game *G){
 							printf(COULEUR_MUR_FIXE);
 						}
 						printf("  ");
-
 					}
 					else{
 						if (TabTuiles[pos].mobile){
@@ -116,19 +255,17 @@ void afficher(Game *G){
 					}
 				}
 				else{ //route
-					
-					if (contraste%2==0){
+					if (x==G->plateau->solopos[0] && G->plateau->solopos[1]==1 || y==G->plateau->solopos[0] && G->plateau->solopos[1]==0){
 						if (TabTuiles[pos].mobile){
-						printf(COULEUR_MUR1);
+						printf(COULEUR_MUR2);
 						}
 						else{
 							printf(COULEUR_MUR_FIXE);
 						}
-
 					}
 					else {
 						if (TabTuiles[pos].mobile){
-						printf(COULEUR_MUR2);
+						printf(COULEUR_MUR1);
 						}
 						else{
 							printf(COULEUR_MUR_FIXE);
@@ -155,9 +292,33 @@ void afficher(Game *G){
 				printf("\033[m");
 				contraste += 1;
 			}
+			else if(soloposi[0]==x && soloposi[1]==y){
+				if(a==1 && b==1){
+					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[solo].tresor);
+				}
+				else{
+					printf(COULEUR_MUR2);
+					if(i%3==0 && j%3==1 && TabTuiles[solo].passage[0]){
+						printf(COULEUR_PASSAGE);
+					}
+					else if(i%3==1 && j%3==2 && TabTuiles[solo].passage[1]){
+						printf(COULEUR_PASSAGE);
+					}
+					else if(i%3==2 && j%3==1 && TabTuiles[solo].passage[2]){
+						printf(COULEUR_PASSAGE);
+					}
+					else if (i%3==1 && j%3==0 && TabTuiles[solo].passage[3])
+					{
+						printf(COULEUR_PASSAGE);
+					}
+					printf("  ");
+				}
+			}
 			else{
 				printf("  ");
 			}
+
+			printf("\033[m");
 		}
 		printf("\n");
 	}

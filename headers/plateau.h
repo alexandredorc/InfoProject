@@ -8,6 +8,7 @@ struct plateau{
     int solo;
     bool *ligne_mobile;
     bool *colonne_mobile;
+    int solopos[3];
 };
 typedef struct plateau plateau;
 

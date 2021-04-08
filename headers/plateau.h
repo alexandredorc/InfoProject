@@ -9,6 +9,7 @@ struct plateau{
     bool *ligne_mobile;
     bool *colonne_mobile;
     int solopos[3];
+    int *couleur;
 };
 typedef struct plateau plateau;
 

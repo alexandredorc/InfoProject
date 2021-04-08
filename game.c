@@ -28,19 +28,22 @@ void create_joueurs(Game *G){
 	printf("entrer le nombre de joueurs: ");
 	scanf("%d", &(G->nbJoueurs));
     Joueur *j=malloc(sizeof(Joueur)*G->nbJoueurs);
+	int taille=G->plateau->taille;
+	int pos[4]={taille*taille-1,taille*(taille-1),0,taille-1};
+	
     for (int i = 0; i < G->nbJoueurs; i++)
 	{
 		printf("entrer le nom du joueur %d: ",i+1);
 		scanf("%s",j[i].nom);
-		
+		j[i].couleur=G->couleur[i];
+		j[i].position=pos[i];
     }
 	
     G->joueurs=j;
-	G->joueurs[0].position=0;
 }
 
 int menusolo(Game *G){
-	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor\n");
+	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
 	int res; 
 	scanf("%d",&res);
 	switch (res)
@@ -132,6 +135,9 @@ int menusolo(Game *G){
 		case 6:
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
+		case 7:
+			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
+			break;
 		default:
 			break;
 		}
@@ -148,10 +154,6 @@ int startgame(Game *G){
 		system(EFFACER);
 		afficher(G);
 		int choix=menusolo(G);
-		
-		
-		
-		
 	}
 	
 	return 0; 
@@ -160,15 +162,19 @@ int startgame(Game *G){
 
 Game *propgame(){
 	Game *G=malloc(sizeof(Game));
-	create_joueurs(G);
 	G->run=true;
 	printf("le plateau a une taille de :");
 	int taille;
 	scanf("%d",&taille);
+	int color[4]={1,2,3,201};
+	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
+	G->plateau->couleur=color;
 	initplat_alloc(G->plateau,taille);
 	fix(G->plateau);
 	G->actif=0;
+
+	create_joueurs(G);
 	return G;
 }
 
@@ -207,16 +213,32 @@ void afficher(Game *G){
 	int * soloposi= soloReal(G->plateau);
 	printf("%d %d\n",soloposi[0],soloposi[1]);
 	int solo=G->plateau->solo;
+	
+	
 	for(int i=0;i<(taille+2)*3;i++){
 		for(int j=0;j<(taille+2)*3;j++){
+			
 			int x=i/3;
 			int y=j/3;
 			int a=i%3;
 			int b=j%3;
+			
 			if (x>=1 && x<=taille && y>=1 && y<=taille){
 				int pos=grille[x-1][y-1];
 				if(a==1 && b==1){
-					printf(COULEUR_PASSAGE"\033[30m%c \033[m",TabTuiles[pos].tresor);
+					bool play=true;
+					for (int k = 0; k < G->nbJoueurs; k++)
+					{
+						//printf("%d %d",G->joueurs[k].position,pos);
+						if(pos==G->joueurs[k].position){
+							printf("\033[48;5;%dm%c%c\033[m",G->joueurs[k].couleur,G->joueurs[k].nom[0],TabTuiles[pos].tresor);
+							play=false;
+							break;
+						}
+					}
+					if(play) {
+						printf(COULEUR_PASSAGE"\033[30m%c \033[m",TabTuiles[pos].tresor);
+					}
 				}
 				else if(a!=1 && b!=1){ //mur
 					if(TabTuiles[pos].couleur!=-1 ){

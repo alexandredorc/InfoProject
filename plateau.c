@@ -29,14 +29,13 @@ void initplat_alloc(plateau* P,int taille)
     P->TabTuiles[9].tresor='g';
     bool Lshape[4]={true,false,false,true};
     int posCorner[4]={taille*taille-1,taille*(taille-1),0,taille-1};
-    int couleur[4]={1,3,201,2};
     for (int i = 0; i < 4; i++)
     {
         for (int  j = 0; j < 4; j++)
         {
             P->TabTuiles[posCorner[i]].passage[(i+j)%4]=Lshape[j];
         }
-        P->TabTuiles[posCorner[i]].couleur=couleur[i];
+        P->TabTuiles[posCorner[i]].couleur=P->couleur[i];
     }
     P->ligne_mobile = malloc(taille*sizeof(bool));
     P->colonne_mobile = malloc(taille*sizeof(bool));

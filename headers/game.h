@@ -11,6 +11,7 @@ struct Game{
         Joueur *joueurs;
         int actif;
         plateau *plateau;
+        int *couleur;
 }; 
 typedef struct Game Game;
 

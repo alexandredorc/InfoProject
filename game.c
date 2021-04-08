@@ -40,7 +40,7 @@ void create_joueurs(Game *G){
 }
 
 int menusolo(Game *G){
-	printf("1 top, 2 right, 3 down, 4 left\n");
+	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor\n");
 	int res; 
 	scanf("%d",&res);
 	switch (res)
@@ -126,7 +126,12 @@ int menusolo(Game *G){
 				G->plateau->solopos[2]=0;
 			}
 			break;
-
+		case 5:
+			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,true);
+			break;
+		case 6:
+			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
+			break;
 		default:
 			break;
 		}

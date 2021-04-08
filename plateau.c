@@ -40,6 +40,8 @@ void initplat_alloc(plateau* P,int taille)
     }
     P->ligne_mobile = malloc(taille*sizeof(bool));
     P->colonne_mobile = malloc(taille*sizeof(bool));
+    P->solo=taille*taille;
+    init_Tuiles(&(P->TabTuiles[P->solo]),' ',false);
     fix(P);
 
 }

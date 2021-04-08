@@ -11,12 +11,16 @@
 #define COULEUR_MUR2 "\033[48;5;21m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
+#ifdef OSisWindows
+#define EFFACER "cls"
+#else
 #define EFFACER "clear"
+#endif
 
 void resetsolo(plateau *P){
-	P->solopos[0]=3;
-	P->solopos[1]=1;
-	P->solopos[2]=1;
+	P->solopos[0]=1;
+	P->solopos[1]=0;
+	P->solopos[2]=0;
 }
 
 
@@ -46,25 +50,18 @@ int menusolo(Game *G){
 			{
 				G->plateau->solopos[0]-=1;
 			}
-			else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
-			{
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[0]==1){
 				if (G->plateau->solopos[2]==0){
-					G->plateau->solopos[2]=1;
-				}
-				else{
-					G->plateau->solopos[2]=0;
-				}
-			}
-			else {
-				if (G->plateau->solopos[2]==0){
-					
 					G->plateau->solopos[0]=1;
 				}
 				else{
-					
 					G->plateau->solopos[0]=G->plateau->taille;
 				}
 				G->plateau->solopos[1]=0;
+				G->plateau->solopos[2]=0;
+			}
+			else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
+			{
 				G->plateau->solopos[2]=0;
 			}
 			break;
@@ -73,16 +70,7 @@ int menusolo(Game *G){
 			{
 				G->plateau->solopos[0]+=1;
 			}
-			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0)
-			{
-				if (G->plateau->solopos[2]==0){
-					G->plateau->solopos[2]=1;
-				}
-				else{
-					G->plateau->solopos[2]=0;
-				}
-			}
-			else{
+			else if(G->plateau->solopos[1]==0 && G->plateau->solopos[0]==G->plateau->taille){
 				if (G->plateau->solopos[2]==0){
 					G->plateau->solopos[0]=1;
 				}
@@ -92,22 +80,17 @@ int menusolo(Game *G){
 				G->plateau->solopos[1]=1;
 				G->plateau->solopos[2]=1;
 			}
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0)
+			{
+					G->plateau->solopos[2]=1;	
+			}
 			break;
 		case 3:
 			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]<G->plateau->taille)
 			{
 				G->plateau->solopos[0]+=1;
 			}
-			else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
-			{
-				if (G->plateau->solopos[2]==0){
-					G->plateau->solopos[2]=1;
-				}
-				else{
-					G->plateau->solopos[2]=0;
-				}
-			}
-			else{
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[0]==G->plateau->taille){
 				if (G->plateau->solopos[2]==0){
 					G->plateau->solopos[0]=1;
 				}
@@ -117,23 +100,18 @@ int menusolo(Game *G){
 				G->plateau->solopos[1]=0;
 				G->plateau->solopos[2]=1;
 			}
+			else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==0)
+			{	
+				G->plateau->solopos[2]=1;
+			}
+			
 			break;
 		case 4:
 			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]>1)
 			{
 				G->plateau->solopos[0]-=1;
 			}
-			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1)
-			{
-				if (G->plateau->solopos[2]==0){
-					G->plateau->solopos[2]=1;
-				}
-				else{
-					G->plateau->solopos[2]=0;
-				}
-				
-			}
-			else{
+			else if(G->plateau->solopos[1]==0 && G->plateau->solopos[0]==1){
 				if (G->plateau->solopos[2]==0){
 					G->plateau->solopos[0]=1;
 				}
@@ -141,6 +119,10 @@ int menusolo(Game *G){
 					G->plateau->solopos[0]=G->plateau->taille;
 				}
 				G->plateau->solopos[1]=1;
+				G->plateau->solopos[2]=0;
+			}
+			else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1)
+			{
 				G->plateau->solopos[2]=0;
 			}
 			break;

@@ -71,3 +71,57 @@ void free_plat(plateau* p)
     free(p->grille);
     free(p);
 }
+
+plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction){
+    //direction 0=vers la gauche, 1=la droite
+    int temp;
+    if (direction==false){
+        temp=p->grille[ligne][0];
+        
+        for (int i=0;i<7;i++){
+            p->grille[ligne][i]=p->grille[ligne][i+1];
+        }
+        p->grille[ligne][7]=p->solo;
+        p->solo=temp;
+    }
+
+    else if (direction==true){
+        temp=p->grille[ligne][7];
+        
+        for (int i=7;i>0;i--){
+            p->grille[ligne][i]=p->grille[ligne][i-1];
+        }
+        p->grille[ligne][0]=p->solo;
+        p->solo=temp;
+    }
+}
+
+plateau deplacementvertical(plateau* p, const int colonne, const bool direction){
+    //direction 0=vers le haut, 1=le bas
+    int temp;
+    printf("test5");
+    if(direction==false){
+        printf("test6");
+        temp=p->grille[1][colonne];
+        
+        for (int i=0;i<7;i++)
+        {
+            p->grille[i][colonne]=p->grille[i+1][colonne];
+        }
+        printf("test7");
+        p->grille[colonne][7]=p->solo;
+        p->solo=temp;
+    }
+    else 
+    {
+        temp=p->grille[7][colonne];
+        printf("test");
+        for (int i=7;i>=1;i--)
+        {
+            p->grille[i][colonne]=p->grille[i-1][colonne];
+        }
+        printf("test2");
+        p->grille[0][colonne]=p->solo;
+        p->solo=temp;
+    }
+}

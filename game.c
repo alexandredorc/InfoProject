@@ -14,7 +14,7 @@
 #ifdef OSisWindows
 #define EFFACER "cls"
 #else
-#define EFFACER "clear"
+#define EFFACER "cls"
 #endif
 
 void resetsolo(plateau *P){
@@ -136,7 +136,27 @@ int menusolo(Game *G){
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
 		case 7:
-			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
+		if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0){
+			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, true);
+		}
+
+		else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1){
+			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, false);
+		}
+
+		else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==0){
+			printf("test3");
+			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, true);
+			printf("test4");
+		}
+
+		else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
+		{
+			printf("nsm");
+			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, false);
+			printf("aedqsdfz");
+		}
+		
 			break;
 		default:
 			break;
@@ -211,7 +231,8 @@ void afficher(Game *G){
 	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
-	printf("%d %d\n",soloposi[0],soloposi[1]);
+	//printf("%d %d\n",soloposi[0],soloposi[1]);
+	printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
 	int solo=G->plateau->solo;
 	
 	

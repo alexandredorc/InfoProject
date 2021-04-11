@@ -27,7 +27,6 @@ void initplat_alloc(plateau* P,int taille)
     }
     P->tuiles[7].tresor='o';
     P->tuiles[9].tresor='g';
-    P->tuiles[9].passage[2]=false;
     P->ligne_mobile = malloc(taille*sizeof(bool));
     P->colonne_mobile = malloc(taille*sizeof(bool));
     fix(P);

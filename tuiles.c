@@ -40,7 +40,7 @@ void tourner(tuile *t,int k,bool sens)
 void init_Tuiles(tuile *tuile,char tresor, bool mobile)
 {
         tuile->passage=malloc(sizeof*(tuile->passage)*4);
-        int forme = randomint(4);
+        int forme = randomint(3);
         int orientation = randomint(3);
         if (forme==0){
                 tuile->passage[0]=false;
@@ -69,6 +69,7 @@ void init_Tuiles(tuile *tuile,char tresor, bool mobile)
         tourner(tuile,orientation,true);
         tuile->mobile=mobile;
         tuile->tresor=tresor;
+        tuile->couleur=-1;
 }
 
 void free_tuile(tuile* t)

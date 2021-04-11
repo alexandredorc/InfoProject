@@ -11,6 +11,7 @@ struct Game{
         Joueur *joueurs;
         int actif;
         plateau *plateau;
+        int *couleur;
 }; 
 typedef struct Game Game;
 
@@ -25,5 +26,7 @@ void resultat(Game *G);
 void endgame(Game *G);
 
 void afficher(Game *G);
+
+
 
 #endif

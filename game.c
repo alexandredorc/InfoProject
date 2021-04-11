@@ -37,8 +37,8 @@ void create_joueurs(Game *G){
 		scanf("%s",j[i].nom);
 		j[i].couleur=G->couleur[i];
 		j[i].position=pos[i];
-		j[i].x=0;
-		j[i].y=0;
+		j[i].x=pos[i]%taille;
+		j[i].y=pos[i]/taille;
     }
 	
     G->joueurs=j;
@@ -46,23 +46,75 @@ void create_joueurs(Game *G){
 
 
 bool menujoueur(Joueur* joueur, plateau* plateau){
-	printf("1 top, 2 right, 3 down, 4 left, 7 valider\n");
+
+	printf("au tour de %s\n",joueur->nom);
+	printf("1 top, 2 right, 3 down, 4 left, 5 valider\n");
+	
+	int posJ=joueur->position;
+	int x =joueur->x;
+	int y =joueur->y;
+
 	int res;
 	scanf("%d",&res);
-	int posJ=joueur->position;
 	switch (res)
 	{
 	case 1:
-		//int posC= G->plateau->grille[][];
+		if (y!=0){
+			
+			int posC= plateau->grille[y-1][x];
+			
+			printf("test3 %d %d",posJ, posC);
+			if(plateau->TabTuiles[posJ].passage[0] && plateau->TabTuiles[posC].passage[2]){
+				joueur->y--;
+				joueur->position=posC;
+			}
+		}
 		break;
-	
+		case 2:
+		if (x!=plateau->taille-1){
+
+
+			int posC= plateau->grille[y][x+1];
+
+			printf("test3 %d %d",posJ, posC);
+			if(plateau->TabTuiles[posJ].passage[1] && plateau->TabTuiles[posC].passage[3]){
+				joueur->x++;
+				joueur->position=posC;
+			}
+		}
+		break;
+		case 3:
+		if (y!=plateau->taille-1){
+			
+			int posC= plateau->grille[y+1][x];
+			printf("test3 %d %d",posJ, posC);
+			if(plateau->TabTuiles[posJ].passage[2] && plateau->TabTuiles[posC].passage[0]){
+				joueur->y++;
+				joueur->position=posC;
+			}
+		}
+		break;
+		case 4:
+		if (x!=0){
+			int posC= plateau->grille[y][x-1];
+
+			printf("test3 %d %d",posJ, posC);
+			if(plateau->TabTuiles[posJ].passage[3] && plateau->TabTuiles[posC].passage[1]){
+				joueur->x--;
+				joueur->position=posC;
+			}
+		}
+		break;
+	case 5:
+		return true;
 	default:
 		break;
 	}
-	return true;//demander le git de thomas le vendeur de sel
+	return false;//demander le git de thomas le vendeur de sel
 }
 
 bool menusolo(Game *G){
+	printf("au tour de %s\n",G->joueurs[G->actif].nom);
 	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
 	int res; 
 	scanf("%d",&res);
@@ -159,6 +211,7 @@ bool menusolo(Game *G){
 		if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
 
 			deplacement(G->plateau);
+			joueur_tuile_solo(&G->joueurs[G->actif],G->plateau);
 			G->plateau->solopos[2]=(G->plateau->solopos[2]+1)%2;
 			return true;
 		}
@@ -191,9 +244,10 @@ int startgame(Game *G){
 				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
 					incr_score(&(G->joueurs[G->actif]));        
     			}
+				G->actif=(G->actif+1)%G->nbJoueurs;
 			}
 		}
-		G->actif=(G->actif+1)%G->nbJoueurs;
+		
 
 	}
 	

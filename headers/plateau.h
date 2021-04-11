@@ -21,7 +21,6 @@ void free_plat(plateau* p);
 
 void create_tresor(plateau* p);
 
-plateau deplacementvertical(plateau* p, const int colonne, const bool direction);
-plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction);
+void deplacement(plateau* p);
 
 #endif

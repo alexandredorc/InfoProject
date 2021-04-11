@@ -7,14 +7,14 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
-#define COULEUR_MUR1 "\033[48;5;18m"
-#define COULEUR_MUR2 "\033[48;5;21m"
+#define COULEUR_MUR1 "\033[48;5;21m"
+#define COULEUR_MUR2 "\033[48;5;27m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
 #ifdef OSisWindows
 #define EFFACER "cls"
 #else
-#define EFFACER "cls"
+#define EFFACER "clear"
 #endif
 
 void resetsolo(plateau *P){
@@ -37,12 +37,32 @@ void create_joueurs(Game *G){
 		scanf("%s",j[i].nom);
 		j[i].couleur=G->couleur[i];
 		j[i].position=pos[i];
+		j[i].x=0;
+		j[i].y=0;
     }
 	
     G->joueurs=j;
 }
 
-int menusolo(Game *G){
+
+bool menujoueur(Joueur* joueur, plateau* plateau){
+	printf("1 top, 2 right, 3 down, 4 left, 7 valider\n");
+	int res;
+	scanf("%d",&res);
+	int posJ=joueur->position;
+	switch (res)
+	{
+	case 1:
+		//int posC= G->plateau->grille[][];
+		break;
+	
+	default:
+		break;
+	}
+	return true;//demander le git de thomas le vendeur de sel
+}
+
+bool menusolo(Game *G){
 	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
 	int res; 
 	scanf("%d",&res);
@@ -136,44 +156,45 @@ int menusolo(Game *G){
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
 		case 7:
-		if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0){
-			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, true);
-		}
+		if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
 
-		else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1){
-			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, false);
+			deplacement(G->plateau);
+			G->plateau->solopos[2]=(G->plateau->solopos[2]+1)%2;
+			return true;
 		}
-
-		else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==0){
-			printf("test3");
-			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, true);
-			printf("test4");
-		}
-
-		else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
-		{
-			printf("nsm");
-			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, false);
-			printf("aedqsdfz");
-		}
-		
 			break;
 		default:
 			break;
 		}
-	return res;
+	return false;
 }
 
 int startgame(Game *G){
 	resetsolo(G->plateau);
+	int state=1;
+	
 	while(G->run){
 		int posJ=G->joueurs[G->actif].position;
-		if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
-			incr_score(&(G->joueurs[G->actif]));        
-    	}
+		
 		system(EFFACER);
 		afficher(G);
-		int choix=menusolo(G);
+		if (state==1) {
+			if (menusolo(G)){
+				state=2;
+			}
+			printf("test de fin de mouvement lab");
+		}
+		else if(state==2){
+			printf("mouvement du pion");
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau)){
+				state=1;
+				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
+					incr_score(&(G->joueurs[G->actif]));        
+    			}
+			}
+		}
+		G->actif=(G->actif+1)%G->nbJoueurs;
+
 	}
 	
 	return 0; 
@@ -232,7 +253,7 @@ void afficher(Game *G){
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
 	//printf("%d %d\n",soloposi[0],soloposi[1]);
-	printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
+	//printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
 	int solo=G->plateau->solo;
 	
 	
@@ -327,7 +348,13 @@ void afficher(Game *G){
 					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[solo].tresor);
 				}
 				else{
+					if(TabTuiles[solo].couleur!=-1 ){
+						printf( "\033[48;5;%dm",TabTuiles[solo].couleur);
+					}
+					else{
+
 					printf(COULEUR_MUR2);
+					}
 					if(i%3==0 && j%3==1 && TabTuiles[solo].passage[0]){
 						printf(COULEUR_PASSAGE);
 					}

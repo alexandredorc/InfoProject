@@ -9,6 +9,8 @@ struct Joueur
         int position;
         char tresor[6];
         int couleur;
+        int x;
+        int y;
 };
 typedef struct Joueur Joueur;
 

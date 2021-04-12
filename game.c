@@ -252,9 +252,11 @@ int startgame(Game *G){
     			}
 				G->actif=(G->actif+1)%G->nbJoueurs;
 			}
+			if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
+				printf("c'est juste win en fait pour %s", G->joueurs[G->actif].nom);
+				G->run=false;
+			}
 		}
-		
-
 	}
 	
 	return 0; 

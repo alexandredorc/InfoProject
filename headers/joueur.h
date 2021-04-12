@@ -13,6 +13,7 @@ struct Joueur
         int couleur;
         int x;
         int y;
+        int positionFinale;
 };
 typedef struct Joueur Joueur;
 

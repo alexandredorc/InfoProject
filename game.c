@@ -33,6 +33,7 @@ void create_joueurs(Game *G, int nbJoueurs){
 		scanf("%s",j[i].nom);
 		j[i].couleur=G->couleur[i];
 		j[i].position=pos[i];
+		j[i].positionFinale=pos[i];
 		j[i].x=pos[i]%taille;
 		j[i].y=pos[i]/taille;
     }
@@ -275,12 +276,12 @@ int startgame(Game *G){
 	
 	while(G->run){
 		int posJ=G->joueurs[G->actif].position;
+		system(EFFACER);
+		afficher(G);
 		if (state==1) {
 			if (menusolo(G)){
 				state=2;
 			}
-			system(EFFACER);
-			afficher(G);
 		}
 		else if(state==2){
 			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,&G->run,G->nbJoueurs)){
@@ -289,12 +290,12 @@ int startgame(Game *G){
 					incr_score(&(G->joueurs[G->actif]));        
     			}
 				G->actif=(G->actif+1)%G->nbJoueurs;
+				if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
+					printf("C'est juste win en fait pour %s\n", G->joueurs[G->actif].nom);
+					G->run=false;
+				}
 			}
-			system(EFFACER);
-			afficher(G);
 		}
-		
-
 	}
 	
 	return 0; 
@@ -326,15 +327,16 @@ Game *propgame(){
 
 
 void resultat(Game *G){
-	printf("fin de la partie\n");	
+	for(int i=0;i<G->nbJoueurs;i++){
+		printf("Le score de %s est %d\n", G->joueurs[i].nom, G->joueurs[i].score);
+	}
 }
 
 void endgame(Game *G){
 	resultat(G);
 	free(G->joueurs);
-        free_plat(G->plateau);
+    free_plat(G->plateau);
 	free(G);
-	printf("fin du programme\n");
 }
 
 int *soloReal(plateau *P){

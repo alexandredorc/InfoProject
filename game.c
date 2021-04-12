@@ -47,7 +47,7 @@ void create_joueurs(Game *G, int nbJoueurs){
 bool menujoueur(Joueur* joueur, plateau* plateau){
 
 	printf("au tour de %s\n",joueur->nom);
-	printf("déplacement fléches directionelles, ENTER valider\n");
+	printf("deplacement fléches directionelles, ENTER valider\n");
 	
 	int posJ=joueur->position;
 	int x =joueur->x;

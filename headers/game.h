@@ -13,6 +13,7 @@ struct Game{
         int actif;
         plateau *plateau;
         int *couleur;
+        int nbTresor;
 }; 
 typedef struct Game Game;
 
@@ -20,7 +21,7 @@ int startgame(Game *G);
 
 Game *propgame();
 
-void create_joueurs(Game *G);
+void create_joueurs(Game *G, int nbJoueurs);
 
 void resultat(Game *G);
 

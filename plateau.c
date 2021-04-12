@@ -1,17 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "headers/tuiles.h"
 #include "headers/plateau.h"
 
-void initplat_alloc(plateau* P,int taille)
+int randomInt (int k)
+{
+   static int first = 0;
+   
+   if (first == 0)
+   {
+      srand (time (NULL));
+      first = 1;
+   }
+   return (rand ()%k);
+}
+
+void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
 {
     /*for(int j=0;j<24;j++){
         P->liste_Tresor[j]=(char) 65+j;
     }*/
     P->taille=taille;
     P->TabTuiles = malloc(((taille*taille)+1)*sizeof(*P->TabTuiles));
-    P->grille=malloc(sizeof *P->grille * taille);
+    P->grille = malloc(sizeof *P->grille * taille);
+    P->listeTresor = malloc(24*sizeof(char));
 	for (int i = 0; i < taille; i++)
 	{
 		P->grille[i] = malloc(sizeof **P->grille * taille);
@@ -28,8 +42,19 @@ void initplat_alloc(plateau* P,int taille)
             k++;
         }
     }
-    P->TabTuiles[7].tresor='o';
-    P->TabTuiles[9].tresor='g';
+    for(int j=0;j<24;j++){
+        P->listeTresor[j]=(char) 65+j;
+    }
+    int nbTresort=nbTresor*nbJoueur;
+    printf("le nombre de tresor total est %d\n", nbTresort);
+    for(int k=0;k<nbTresort;k++){
+        int pos=0;
+        while(pos==0 || pos==taille-1 || pos==taille*taille-taille || pos==taille*taille-1 || P->TabTuiles[pos].tresor!=' '){
+            pos=randomInt(taille*taille);
+        }
+        printf("la position %d est %d\n", k, pos);
+        P->TabTuiles[pos].tresor=P->listeTresor[k];
+    }
     bool Lshape[4]={true,false,false,true};
     int posCorner[4]={taille*taille-1,taille*(taille-1),0,taille-1};
     for (int i = 0; i < 4; i++)
@@ -45,7 +70,6 @@ void initplat_alloc(plateau* P,int taille)
     P->solo=taille*taille;
     init_Tuiles(&(P->TabTuiles[P->solo]),' ',true);
     fix(P);
-
 }
 
 void fix(plateau *P ){
@@ -68,6 +92,7 @@ void free_plat(plateau* p)
 {
     free(p->ligne_mobile);
     free(p->colonne_mobile);
+    free(p->listeTresor);
     for(int i=0;i<p->taille;i++){
         free(p->grille[i]);
     }

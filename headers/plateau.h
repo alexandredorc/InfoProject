@@ -22,7 +22,7 @@ void free_plat(plateau* p);
 
 void create_tresor(plateau* p);
 
-void deplacement(plateau* p);
+int deplacement(plateau* p);
 
 int randomInt(int k);
 

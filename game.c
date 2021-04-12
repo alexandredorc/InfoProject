@@ -226,9 +226,31 @@ bool menusolo(Game *G){
 		case 13:
 			if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
 
-				deplacement(G->plateau);
+				int res=deplacement(G->plateau);
 				for (int i = 0; i < G->nbJoueurs; i++)
 				{
+					if (G->plateau->grille[G->joueurs[i].y][G->joueurs[i].x]!=G->joueurs[i].position)
+					{
+						printf("test %d",res);
+						scanf("%d",&res);
+						switch (res)
+						{
+						case 1:
+							G->joueurs[i].x++;
+							break;
+						case 2:
+							G->joueurs[i].x--;
+							break;
+						case 3:
+							G->joueurs[i].y++;
+							break;
+						case 4:
+							G->joueurs[i].y--;
+							break;
+						default:
+							break;
+						}
+					}
 					joueur_tuile_solo(&G->joueurs[i],G->plateau);
 				}
 				

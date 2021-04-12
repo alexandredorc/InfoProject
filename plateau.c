@@ -98,14 +98,14 @@ void free_plat(plateau* p)
     free(p);
 }
 
-void deplacement(plateau* p){
+int deplacement(plateau* p){
     //direction 0=vers la gauche, 1=la droite
     int temp;
     int num=p->solopos[0]-1;
-    
+    int res;
     if(p->solopos[1]==1){
         if (p->solopos[2]==0){
-            
+            res=1;
             temp=p->grille[num][p->taille-1];
             for (int i=p->taille-1;i>0;i--){
                 p->grille[num][i]=p->grille[num][i-1];
@@ -114,6 +114,7 @@ void deplacement(plateau* p){
             p->solo=temp;
         }
         else{
+            res=2;
             temp=p->grille[num][0];
             for (int i=1;i<p->taille;i++){
                 p->grille[num][i-1]=p->grille[num][i];
@@ -124,6 +125,7 @@ void deplacement(plateau* p){
     }else{
 
         if (p->solopos[2]==0){
+            res=3;
             temp=p->grille[p->taille-1][num];
             for (int i=p->taille-1;i>0;i--){
                 p->grille[i][num]=p->grille[i-1][num];
@@ -132,7 +134,7 @@ void deplacement(plateau* p){
             p->solo=temp;
         }
         else{
-              printf("teste");
+            res=4;
             temp=p->grille[0][num];
             for (int i=1;i<p->taille;i++){
                 p->grille[i-1][num]=p->grille[i][num];
@@ -141,4 +143,5 @@ void deplacement(plateau* p){
             p->solo=temp;
         }
     }
+    return res;
 }

@@ -14,13 +14,13 @@
 #ifdef OSisWindows
 #define EFFACER "cls"
 #else
-#define EFFACER "clear"
+#define EFFACER "cls"
 #endif
 
 void resetsolo(plateau *P){
-	P->solopos[0]=1;
-	P->solopos[1]=0;
-	P->solopos[2]=0;
+	P->solopos[0]=1;//eloignement par rapport au plateau en haut à gauche
+	P->solopos[1]=0;//deplacement sur ligne ou colonne (1=colonne, 0=ligne)
+	P->solopos[2]=0;//quelle colonne ou ligne (numero de la colonne ou ligne)
 }
 
 
@@ -261,14 +261,16 @@ Game *propgame(){
 	printf("le plateau a une taille de :");
 	int taille;
 	scanf("%d",&taille);
+	int nbTresor;
+	printf("Le nombre de tresor a trouver par personne est :");
+	scanf("%d",&nbTresor);
 	int color[4]={1,2,3,201};
 	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
 	G->plateau->couleur=color;
-	initplat_alloc(G->plateau,taille);
+	initplat_alloc(G->plateau,taille,3, nbTresor);
 	fix(G->plateau);
 	G->actif=0;
-
 	create_joueurs(G);
 	return G;
 }

@@ -361,11 +361,15 @@ void afficher(Game *G){
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
 	int solo=G->plateau->solo;
-	for(int i=0;i<(taille+2)*3;i++){
-		for(int j=0;j<(taille+2)*3;j++){
-			
+	int offset=-20;
+	for(int i=offset;i<(taille+2)*3;i++){
+		for(int j=offset;j<(taille+2)*3;j++){
 			int x=i/3;
 			int y=j/3;
+			if(i<0 || j<0){
+				x=-1;
+				y=-1;
+			}
 			int a=i%3;
 			int b=j%3;
 			

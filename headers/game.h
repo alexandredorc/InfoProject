@@ -20,7 +20,7 @@ int startgame(Game *G);
 
 Game *propgame();
 
-void create_joueurs(Game *G);
+void create_joueurs(Game *G, int nbJoueurs);
 
 void resultat(Game *G);
 

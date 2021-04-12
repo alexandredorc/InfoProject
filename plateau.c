@@ -46,7 +46,9 @@ void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
     printf("le nombre de tresor total est %d\n", nbTresort);
     for(int k=0;k<nbTresort;k++){
         int pos=0;
-        pos=randomInt(taille*taille);
+        while(pos==0 || pos==taille-1 || pos==taille*taille-taille || pos==taille*taille-1 || P->TabTuiles[pos].tresor!=' '){
+            pos=randomInt(taille*taille);
+        }
         printf("la position %d est %d\n", k, pos);
         P->TabTuiles[pos].tresor=P->listeTresor[k];
     }

@@ -24,9 +24,8 @@ void resetsolo(plateau *P){
 }
 
 
-void create_joueurs(Game *G){
-	printf("entrer le nombre de joueurs: ");
-	scanf("%d", &(G->nbJoueurs));
+void create_joueurs(Game *G, int nbJoueurs){
+	G->nbJoueurs=nbJoueurs;
     Joueur *j=malloc(sizeof(Joueur)*G->nbJoueurs);
 	int taille=G->plateau->taille;
 	int pos[4]={taille*taille-1,taille*(taille-1),0,taille-1};
@@ -264,14 +263,17 @@ Game *propgame(){
 	int nbTresor;
 	printf("Le nombre de tresor a trouver par personne est :");
 	scanf("%d",&nbTresor);
+	int nbJoueurs;
+	printf("entrer le nombre de joueurs: ");
+	scanf("%d", &nbJoueurs);
 	int color[4]={1,2,3,201};
 	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
 	G->plateau->couleur=color;
-	initplat_alloc(G->plateau,taille,3, nbTresor);
+	initplat_alloc(G->plateau,taille, nbJoueurs, nbTresor);
 	fix(G->plateau);
 	G->actif=0;
-	create_joueurs(G);
+	create_joueurs(G, nbJoueurs);
 	return G;
 }
 

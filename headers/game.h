@@ -7,6 +7,7 @@
 
 struct Game{
         bool run;
+        int nbTresor;
         int nbJoueurs;
         Joueur *joueurs;
         int actif;

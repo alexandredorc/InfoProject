@@ -6,6 +6,9 @@
 
 void initplat_alloc(plateau* P,int taille)
 {
+    /*for(int j=0;j<24;j++){
+        P->liste_Tresor[j]=(char) 65+j;
+    }*/
     P->taille=taille;
     P->TabTuiles = malloc(((taille*taille)+1)*sizeof(*P->TabTuiles));
     P->grille=malloc(sizeof *P->grille * taille);

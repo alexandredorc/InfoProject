@@ -306,6 +306,7 @@ void afficher(Game *G){
 	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
+	printf("%d", G->joueurs[0].score);
 	//printf("%d %d\n",soloposi[0],soloposi[1]);
 	//printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
 	int solo=G->plateau->solo;

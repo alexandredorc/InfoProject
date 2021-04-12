@@ -269,7 +269,7 @@ int startgame(Game *G){
 				G->actif=(G->actif+1)%G->nbJoueurs;
 			}
 			if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
-				printf("c'est juste win en fait pour %s", G->joueurs[G->actif].nom);
+				printf("C'est juste win en fait pour %s\n", G->joueurs[G->actif].nom);
 				G->run=false;
 			}
 		}
@@ -304,15 +304,14 @@ Game *propgame(){
 
 
 void resultat(Game *G){
-	printf("fin de la partie\n");	
+	
 }
 
 void endgame(Game *G){
 	resultat(G);
 	free(G->joueurs);
-        free_plat(G->plateau);
+    free_plat(G->plateau);
 	free(G);
-	printf("fin du programme\n");
 }
 
 int *soloReal(plateau *P){

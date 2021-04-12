@@ -13,7 +13,6 @@ struct Game{
         int actif;
         plateau *plateau;
         int *couleur;
-        int nbTresor;
 }; 
 typedef struct Game Game;
 

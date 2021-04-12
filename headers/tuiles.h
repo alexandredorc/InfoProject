@@ -11,4 +11,7 @@ typedef struct tuile tuile;
 void tourner(tuile *t,int k,bool sens);
 
 void init_Tuiles(tuile *tuile,char tresor,bool mobile);
+
+void free_tuile(tuile* t);
+
 #endif

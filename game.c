@@ -50,7 +50,7 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 		printf("Ta cible est %c\n", joueur->tresor[joueur->score]);
 	}
 	else{
-		printf("tu as récolté tous les trésors retourne vite à ta case!!");
+		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
 	}
 	printf("deplacement fléches directionelles, ENTER valider\n");
 	
@@ -116,7 +116,7 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 	default:
 		break;
 	}
-	return false;//demander le git de thomas le vendeur de sel
+	return false;
 }
 
 bool menusolo(Game *G){
@@ -225,15 +225,16 @@ bool menusolo(Game *G){
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
 		case 13:
-			if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
+			if ((G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 
+			|| G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1) && 
+			!(G->plateau->lastPos[0]==G->plateau->solopos[0] && G->plateau->lastPos[1]==G->plateau->solopos[1] 
+			&& G->plateau->lastPos[2]!=G->plateau->solopos[2])){
 
 				int res=deplacement(G->plateau);
 				for (int i = 0; i < G->nbJoueurs; i++)
 				{
 					if (G->plateau->grille[G->joueurs[i].y][G->joueurs[i].x]!=G->joueurs[i].position)
 					{
-						printf("test %d",res);
-						scanf("%d",&res);
 						switch (res)
 						{
 						case 1:
@@ -301,7 +302,6 @@ int startgame(Game *G){
 	return 0; 
 }
 
-
 Game *propgame(){
 	Game *G=malloc(sizeof(Game));
 	G->run=true;
@@ -325,7 +325,6 @@ Game *propgame(){
 	return G;
 }
 
-
 void resultat(Game *G){
 	for(int i=0;i<G->nbJoueurs;i++){
 		printf("Le score de %s est %d\n", G->joueurs[i].nom, G->joueurs[i].score);
@@ -334,14 +333,16 @@ void resultat(Game *G){
 
 void endgame(Game *G){
 	resultat(G);
-	free(G->joueurs);
+	free_joueurs(G->joueurs,G->nbJoueurs);
     free_plat(G->plateau);
 	free(G);
 }
 
 int *soloReal(plateau *P){
 	int *pos=malloc(sizeof(int)*2);
-	//[0] est la distance depuis 0;0 [1] si c'est une ligne ou colone [2] si c'est dans la col ou ligne oposé ou non
+	//[0] est la distance depuis 0;0 
+	//[1] si c'est une ligne ou colone 
+	//[2] si c'est dans la col ou ligne oposé ou non
 	if(P->solopos[1]==1){
 		pos[0]=P->solopos[0];
 		pos[1]=P->solopos[2]*(P->taille+1);
@@ -359,11 +360,7 @@ void afficher(Game *G){
 	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
-	//printf("%d %d\n",soloposi[0],soloposi[1]);
-	//printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
 	int solo=G->plateau->solo;
-	
-	
 	for(int i=0;i<(taille+2)*3;i++){
 		for(int j=0;j<(taille+2)*3;j++){
 			
@@ -378,7 +375,6 @@ void afficher(Game *G){
 					bool play=true;
 					for (int k = 0; k < G->nbJoueurs; k++)
 					{
-						//printf("%d %d",G->joueurs[k].position,pos);
 						if(pos==G->joueurs[k].position){
 							printf("\033[48;5;%dm%c%c\033[m",G->joueurs[k].couleur,G->joueurs[k].nom[0],TabTuiles[pos].tresor);
 							play=false;
@@ -450,7 +446,7 @@ void afficher(Game *G){
 				printf("\033[m");
 				contraste += 1;
 			}
-			else if(soloposi[0]==x && soloposi[1]==y){
+			else if(soloposi[0]==x && soloposi[1]==y){//affichage de la case solo
 				if(a==1 && b==1){
 					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[solo].tresor);
 				}

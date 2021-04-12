@@ -75,4 +75,5 @@ void init_Tuiles(tuile *tuile,char tresor, bool mobile)
 void free_tuile(tuile* t)
 {
     free(t->passage);
+    free(t);
 }

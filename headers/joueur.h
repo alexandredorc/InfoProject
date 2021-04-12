@@ -25,4 +25,6 @@ void attribute_tresor(plateau *p, Joueur *jou, int nombre);
 
 void pop(plateau *p, int indice);
 
+void free_joueurs(Joueur *j,int nbJoueurs);
+
 #endif

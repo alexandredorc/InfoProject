@@ -14,12 +14,13 @@ void incr_score(Joueur *j){
 
 void shuffle(char *array, int n)
 {
+    srand(time(NULL));
     if (n > 1) 
     {
         int i;
         for (i = 0; i < n - 1; i++) 
         {
-          int j = i + rand() / (RAND_MAX / (n - i) + 1);
+          int j = rand()%n;
           char t = array[j];
           array[j] = array[i];
           array[i] = t;
@@ -48,12 +49,10 @@ void joueur_tuile_solo(Joueur *j,plateau *plateau){
         if(plateau->solopos[2]==1){
             a=plateau->taille-1;
             b=plateau->solopos[0]-1;
-            printf("%d %d coor",a,b);
         }
         else{
             a=0;
             b=plateau->solopos[0]-1;
-            printf("%d %d coor",a,b);
             
         }
     }
@@ -62,18 +61,23 @@ void joueur_tuile_solo(Joueur *j,plateau *plateau){
 
             b=plateau->taille-1;
             a=plateau->solopos[0]-1;
-            printf("%d %d coor",a,b);
         }
         else{
             b=0;
             a=plateau->solopos[0]-1;
-            printf("%d %d coor",a,b);
         }
     }
     if(j->position==plateau->solo){
         j->position=plateau->grille[b][a];
         j->x=a;
         j->y=b;
-        printf("%d",j->position);
     }
+}
+
+void free_joueurs(Joueur *j,int nbJoueurs){
+    for (int i = 0; i < nbJoueurs; i++)
+    {
+        free(j[i].tresor);
+    }
+    free(j);
 }

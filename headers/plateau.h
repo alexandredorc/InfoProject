@@ -11,6 +11,7 @@ struct plateau{
     int solopos[3];
     int *couleur;
     char *listeTresor;
+    int lastPos[3];
 };
 typedef struct plateau plateau;
 

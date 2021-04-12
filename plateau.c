@@ -93,13 +93,19 @@ void free_plat(plateau* p)
     free(p->listeTresor);
     for(int i=0;i<p->taille;i++){
         free(p->grille[i]);
+        free_tuile(p->TabTuiles);
     }
     free(p->grille);
+    free(p->couleur);
+    free(p->listeTresor);
     free(p);
 }
 
 int deplacement(plateau* p){
     //direction 0=vers la gauche, 1=la droite
+    p->lastPos[0]=p->solopos[0];
+    p->lastPos[1]=p->solopos[1];
+    p->lastPos[2]=p->solopos[2];
     int temp;
     int num=p->solopos[0]-1;
     int res;

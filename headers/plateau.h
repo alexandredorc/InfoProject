@@ -10,18 +10,20 @@ struct plateau{
     bool *colonne_mobile;
     int solopos[3];
     int *couleur;
+    char *listeTresor;
 };
 typedef struct plateau plateau;
 
 void fix(plateau *P);
 
-void initplat_alloc(plateau* P,int taille);
+void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor);
 
 void free_plat(plateau* p);
 
 void create_tresor(plateau* p);
 
-plateau deplacementvertical(plateau* p, const int colonne, const bool direction);
-plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction);
+void deplacement(plateau* p);
+
+int randomInt(int k);
 
 #endif

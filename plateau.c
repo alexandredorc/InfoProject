@@ -1,14 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "headers/tuiles.h"
 #include "headers/plateau.h"
 
-void initplat_alloc(plateau* P,int taille)
+int randomInt (int k)
 {
+   static int first = 0;
+   
+   if (first == 0)
+   {
+      srand (time (NULL));
+      first = 1;
+   }
+   return (rand ()%k);
+}
+
+void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
+{
+    /*for(int j=0;j<24;j++){
+        P->liste_Tresor[j]=(char) 65+j;
+    }*/
     P->taille=taille;
     P->TabTuiles = malloc(((taille*taille)+1)*sizeof(*P->TabTuiles));
-    P->grille=malloc(sizeof *P->grille * taille);
+    P->grille = malloc(sizeof *P->grille * taille);
+    P->listeTresor = malloc(24*sizeof(char));
 	for (int i = 0; i < taille; i++)
 	{
 		P->grille[i] = malloc(sizeof **P->grille * taille);
@@ -25,8 +42,17 @@ void initplat_alloc(plateau* P,int taille)
             k++;
         }
     }
-    P->TabTuiles[7].tresor='o';
-    P->TabTuiles[9].tresor='g';
+    for(int j=0;j<24;j++){
+        P->listeTresor[j]=(char) 65+j;
+    }
+    int nbTresort=nbTresor*nbJoueur;
+    for(int k=0;k<nbTresort;k++){
+        int pos=0;
+        while(pos==0 || pos==taille-1 || pos==taille*taille-taille || pos==taille*taille-1 || P->TabTuiles[pos].tresor!=' '){
+            pos=randomInt(taille*taille);
+        }
+        P->TabTuiles[pos].tresor=P->listeTresor[k];
+    }
     bool Lshape[4]={true,false,false,true};
     int posCorner[4]={taille*taille-1,taille*(taille-1),0,taille-1};
     for (int i = 0; i < 4; i++)
@@ -40,9 +66,8 @@ void initplat_alloc(plateau* P,int taille)
     P->ligne_mobile = malloc(taille*sizeof(bool));
     P->colonne_mobile = malloc(taille*sizeof(bool));
     P->solo=taille*taille;
-    init_Tuiles(&(P->TabTuiles[P->solo]),' ',false);
+    init_Tuiles(&(P->TabTuiles[P->solo]),' ',true);
     fix(P);
-
 }
 
 void fix(plateau *P ){
@@ -65,6 +90,7 @@ void free_plat(plateau* p)
 {
     free(p->ligne_mobile);
     free(p->colonne_mobile);
+    free(p->listeTresor);
     for(int i=0;i<p->taille;i++){
         free(p->grille[i]);
     }
@@ -72,56 +98,47 @@ void free_plat(plateau* p)
     free(p);
 }
 
-plateau deplacementhorizontal(plateau* p, const int ligne, const bool direction){
+void deplacement(plateau* p){
     //direction 0=vers la gauche, 1=la droite
     int temp;
-    if (direction==false){
-        temp=p->grille[ligne][0];
-        
-        for (int i=0;i<7;i++){
-            p->grille[ligne][i]=p->grille[ligne][i+1];
+    int num=p->solopos[0]-1;
+    
+    if(p->solopos[1]==1){
+        if (p->solopos[2]==0){
+            
+            temp=p->grille[num][p->taille-1];
+            for (int i=p->taille-1;i>0;i--){
+                p->grille[num][i]=p->grille[num][i-1];
+            }
+            p->grille[num][0]=p->solo;
+            p->solo=temp;
         }
-        p->grille[ligne][7]=p->solo;
-        p->solo=temp;
-    }
+        else{
+            temp=p->grille[num][0];
+            for (int i=1;i<p->taille;i++){
+                p->grille[num][i-1]=p->grille[num][i];
+            }
+            p->grille[num][p->taille-1]=p->solo;
+            p->solo=temp;
+        }
+    }else{
 
-    else if (direction==true){
-        temp=p->grille[ligne][7];
-        
-        for (int i=7;i>0;i--){
-            p->grille[ligne][i]=p->grille[ligne][i-1];
+        if (p->solopos[2]==0){
+            temp=p->grille[p->taille-1][num];
+            for (int i=p->taille-1;i>0;i--){
+                p->grille[i][num]=p->grille[i-1][num];
+            }
+            p->grille[0][num]=p->solo;
+            p->solo=temp;
         }
-        p->grille[ligne][0]=p->solo;
-        p->solo=temp;
-    }
-}
-
-plateau deplacementvertical(plateau* p, const int colonne, const bool direction){
-    //direction 0=vers le haut, 1=le bas
-    int temp;
-    printf("test5");
-    if(direction==false){
-        printf("test6");
-        temp=p->grille[1][colonne];
-        
-        for (int i=0;i<7;i++)
-        {
-            p->grille[i][colonne]=p->grille[i+1][colonne];
+        else{
+              printf("teste");
+            temp=p->grille[0][num];
+            for (int i=1;i<p->taille;i++){
+                p->grille[i-1][num]=p->grille[i][num];
+            }
+            p->grille[p->taille-1][num]=p->solo;
+            p->solo=temp;
         }
-        printf("test7");
-        p->grille[colonne][7]=p->solo;
-        p->solo=temp;
-    }
-    else 
-    {
-        temp=p->grille[7][colonne];
-        printf("test");
-        for (int i=7;i>=1;i--)
-        {
-            p->grille[i][colonne]=p->grille[i-1][colonne];
-        }
-        printf("test2");
-        p->grille[0][colonne]=p->solo;
-        p->solo=temp;
     }
 }

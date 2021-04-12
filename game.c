@@ -7,8 +7,9 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
-#define COULEUR_MUR1 "\033[48;5;18m"
-#define COULEUR_MUR2 "\033[48;5;21m"
+
+#define COULEUR_MUR1 "\033[48;5;21m"
+#define COULEUR_MUR2 "\033[48;5;27m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
 #ifdef OSisWindows
@@ -17,15 +18,14 @@
 #endif
 
 void resetsolo(plateau *P){
-	P->solopos[0]=1;
-	P->solopos[1]=0;
-	P->solopos[2]=0;
+	P->solopos[0]=1;//eloignement par rapport au plateau en haut à gauche
+	P->solopos[1]=0;//deplacement sur ligne ou colonne (1=colonne, 0=ligne)
+	P->solopos[2]=0;//quelle colonne ou ligne (numero de la colonne ou ligne)
 }
 
 
-void create_joueurs(Game *G){
-	printf("entrer le nombre de joueurs: ");
-	scanf("%d", &(G->nbJoueurs));
+void create_joueurs(Game *G, int nbJoueurs){
+	G->nbJoueurs=nbJoueurs;
     Joueur *j=malloc(sizeof(Joueur)*G->nbJoueurs);
 	int taille=G->plateau->taille;
 	int pos[4]={taille*taille-1,taille*(taille-1),0,taille-1};
@@ -36,18 +36,110 @@ void create_joueurs(Game *G){
 		scanf("%s",j[i].nom);
 		j[i].couleur=G->couleur[i];
 		j[i].position=pos[i];
+		j[i].x=pos[i]%taille;
+		j[i].y=pos[i]/taille;
     }
 	
     G->joueurs=j;
 }
 
-int menusolo(Game *G){
-	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
-	int res; 
-	scanf("%d",&res);
+
+bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
+
+	printf("au tour de %s\n",joueur->nom);
+	if(joueur->score!=nbTresor){
+		printf("ton score est %d\n",joueur->score);
+		printf("Ta cible est %c\n", joueur->tresor[joueur->score]);
+	}
+	else{
+		printf("tu as récolté tous les trésors retourne vite à ta case!!");
+	}
+	printf("deplacement fléches directionelles, ENTER valider\n");
+	
+	int posJ=joueur->position;
+	int x =joueur->x;
+	int y =joueur->y;
+	int res=-1;
+	while(res==-1 || res==27 || res==91){
+		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
+            res = getchar();
+            if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
+	}
+	switch (res)
+	{
+	case 65:
+		if (y!=0){
+			
+			int posC= plateau->grille[y-1][x];
+			
+			if(plateau->TabTuiles[posJ].passage[0] && plateau->TabTuiles[posC].passage[2]){
+				joueur->y--;
+				joueur->position=posC;
+			}
+		}
+		break;
+		case 67:
+		if (x!=plateau->taille-1){
+
+
+			int posC= plateau->grille[y][x+1];
+			
+			if(plateau->TabTuiles[posJ].passage[1] && plateau->TabTuiles[posC].passage[3]){
+				joueur->x++;
+				joueur->position=posC;
+			}
+		}
+		break;
+		case 66:
+		if (y!=plateau->taille-1){
+			
+			int posC= plateau->grille[y+1][x];
+			if(plateau->TabTuiles[posJ].passage[2] && plateau->TabTuiles[posC].passage[0]){
+				joueur->y++;
+				joueur->position=posC;
+			}
+		}
+		break;
+		case 68:
+		if (x!=0){
+			int posC= plateau->grille[y][x-1];
+			if(plateau->TabTuiles[posJ].passage[3] && plateau->TabTuiles[posC].passage[1]){
+				joueur->x--;
+				joueur->position=posC;
+			}
+		}
+		break;
+	case 13:
+		return true;
+	case 127:
+			*run=false;
+			return false;
+			break;
+	default:
+		break;
+	}
+	return false;//demander le git de thomas le vendeur de sel
+}
+
+bool menusolo(Game *G){
+	printf("au tour de %s\n",G->joueurs[G->actif].nom);
+	if(G->joueurs[G->actif].score!=G->nbTresor){
+		printf("ton score est %d\n",G->joueurs[G->actif].score);
+		printf("Ta cible est %c\n", G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]);
+	}
+	else{
+		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
+	}
+	printf("fleches directionelles pour ce deplacer \n A tourner anti hor ,Z tourner hor, ENTER valider\n");
+	int res=-1;
+	while(res==-1 || res==27 || res==91){
+		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
+            res = getchar();
+            if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
+	}
 	switch (res)
 		{
-		case 1:
+		case 65:
 			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]>1)
 			{
 				G->plateau->solopos[0]-=1;
@@ -67,7 +159,7 @@ int menusolo(Game *G){
 				G->plateau->solopos[2]=0;
 			}
 			break;
-		case 2:
+		case 67:
 			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]<G->plateau->taille)
 			{
 				G->plateau->solopos[0]+=1;
@@ -87,7 +179,7 @@ int menusolo(Game *G){
 					G->plateau->solopos[2]=1;	
 			}
 			break;
-		case 3:
+		case 66:
 			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]<G->plateau->taille)
 			{
 				G->plateau->solopos[0]+=1;
@@ -108,7 +200,7 @@ int menusolo(Game *G){
 			}
 			
 			break;
-		case 4:
+		case 68:
 			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]>1)
 			{
 				G->plateau->solopos[0]-=1;
@@ -128,50 +220,71 @@ int menusolo(Game *G){
 				G->plateau->solopos[2]=0;
 			}
 			break;
-		case 5:
+		case 122:
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,true);
 			break;
-		case 6:
+		case 97:
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
-		case 7:
-		if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==0){
-			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, true);
-		}
+		case 13:
+			if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
 
-		else if(G->plateau->solopos[1]==1 && G->plateau->solopos[2]==1){
-			deplacementhorizontal(G->plateau, G->plateau->solopos[0]-1, false);
-		}
-
-		else if(G->plateau->solopos[1]==0 && G->plateau->solopos[2]==0){
-			printf("test3");
-			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, true);
-			printf("test4");
-		}
-
+<<<<<<< HEAD
 		else if (G->plateau->solopos[1]==0 && G->plateau->solopos[2]==1)
 		{
 			printf("nsm");
 			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, false);
 			printf("aedqsdfz");
 		}
+=======
+				deplacement(G->plateau);
+				for (int i = 0; i < G->nbJoueurs; i++)
+				{
+					joueur_tuile_solo(&G->joueurs[i],G->plateau);
+				}
+				
+				
+				G->plateau->solopos[2]=(G->plateau->solopos[2]+1)%2;
+				return true;
+			}
+			break;
+		case 127:
+			G->run=false;
+			return false;
+>>>>>>> aab6fb22f15f08fac1d64ed4a756d66d492ae814
 			break;
 		default:
 			break;
 		}
-	return res;
+	return false;
 }
 
 int startgame(Game *G){
 	resetsolo(G->plateau);
+	int state=1;
+	
 	while(G->run){
 		int posJ=G->joueurs[G->actif].position;
-		if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
-			incr_score(&(G->joueurs[G->actif]));        
-    	}
 		system(EFFACER);
 		afficher(G);
-		int choix=menusolo(G);
+		if (state==1) {
+			if (menusolo(G)){
+				state=2;
+			}
+		}
+		else if(state==2){
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,&G->run,G->nbJoueurs)){
+				state=1;
+				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
+					incr_score(&(G->joueurs[G->actif]));        
+    			}
+				G->actif=(G->actif+1)%G->nbJoueurs;
+			}
+			if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
+				printf("c'est juste win en fait pour %s", G->joueurs[G->actif].nom);
+				G->run=false;
+			}
+		}
 	}
 	
 	return 0; 
@@ -184,15 +297,20 @@ Game *propgame(){
 	printf("le plateau a une taille de :");
 	int taille;
 	scanf("%d",&taille);
+	printf("Le nombre de tresor a trouver par personne est :");
+	scanf("%d",&G->nbTresor);
+	int nbJoueurs;
+	printf("entrer le nombre de joueurs: ");
+	scanf("%d", &nbJoueurs);
 	int color[4]={1,2,3,201};
 	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
 	G->plateau->couleur=color;
-	initplat_alloc(G->plateau,taille);
+	initplat_alloc(G->plateau,taille, nbJoueurs, G->nbTresor);
 	fix(G->plateau);
 	G->actif=0;
-
-	create_joueurs(G);
+	create_joueurs(G, nbJoueurs);
+	attribute_tresor(G->plateau, G->joueurs, G->nbTresor);
 	return G;
 }
 
@@ -230,7 +348,7 @@ void afficher(Game *G){
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
 	//printf("%d %d\n",soloposi[0],soloposi[1]);
-	printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
+	//printf("%d %d %d", G->plateau->solopos[0], G->plateau->solopos[1], G->plateau->solopos[2]);
 	int solo=G->plateau->solo;
 	
 	
@@ -325,7 +443,13 @@ void afficher(Game *G){
 					printf(COULEUR_PASSAGE "\033[30m%c \033[m",TabTuiles[solo].tresor);
 				}
 				else{
+					if(TabTuiles[solo].couleur!=-1 ){
+						printf( "\033[48;5;%dm",TabTuiles[solo].couleur);
+					}
+					else{
+
 					printf(COULEUR_MUR2);
+					}
 					if(i%3==0 && j%3==1 && TabTuiles[solo].passage[0]){
 						printf(COULEUR_PASSAGE);
 					}

@@ -13,8 +13,8 @@ void incr_score(Joueur *j){
 }
 
 void pop(plateau *p, int indice){
-    int i=indice-1;
-    for (i; i < 24 - 1; i++)
+    
+    for (int i=indice-1; i < 24 - 1; i++)
          p->liste_Tresor[i] = p->liste_Tresor[i+1];
 }
 

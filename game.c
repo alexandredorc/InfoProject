@@ -12,7 +12,6 @@
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
 #ifdef OSisWindows
-#define EFFACER "cls"
 #else
 #define EFFACER "cls"
 #endif
@@ -156,7 +155,6 @@ int menusolo(Game *G){
 			deplacementvertical(G->plateau, G->plateau->solopos[0]-1, false);
 			printf("aedqsdfz");
 		}
-		
 			break;
 		default:
 			break;

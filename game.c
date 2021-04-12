@@ -33,6 +33,7 @@ void create_joueurs(Game *G, int nbJoueurs){
 		scanf("%s",j[i].nom);
 		j[i].couleur=G->couleur[i];
 		j[i].position=pos[i];
+		j[i].positionFinale=pos[i];
 		j[i].x=pos[i]%taille;
 		j[i].y=pos[i]/taille;
     }

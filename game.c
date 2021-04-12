@@ -12,11 +12,7 @@
 #define COULEUR_MUR2 "\033[48;5;27m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
-#ifdef OSisWindows
-#define EFFACER "cls"
-#else
 #define EFFACER "clear"
-#endif
 
 void resetsolo(plateau *P){
 	P->solopos[0]=1;//eloignement par rapport au plateau en haut à gauche
@@ -45,16 +41,23 @@ void create_joueurs(Game *G, int nbJoueurs){
 }
 
 
-bool menujoueur(Joueur* joueur, plateau* plateau){
+bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 
 	printf("au tour de %s\n",joueur->nom);
+	if(joueur->score!=nbTresor){
+		printf("ton score est %d\n",joueur->score);
+		printf("Ta cible est %c\n", joueur->tresor[joueur->score]);
+	}
+	else{
+		printf("tu as récolté tous les trésors retourne vite à ta case!!");
+	}
 	printf("deplacement fléches directionelles, ENTER valider\n");
 	
 	int posJ=joueur->position;
 	int x =joueur->x;
 	int y =joueur->y;
 	int res=-1;
-	while(res==-1){
+	while(res==-1 || res==27 || res==91){
 		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
             res = getchar();
             if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
@@ -105,6 +108,10 @@ bool menujoueur(Joueur* joueur, plateau* plateau){
 		break;
 	case 13:
 		return true;
+	case 127:
+			*run=false;
+			return false;
+			break;
 	default:
 		break;
 	}
@@ -113,14 +120,20 @@ bool menujoueur(Joueur* joueur, plateau* plateau){
 
 bool menusolo(Game *G){
 	printf("au tour de %s\n",G->joueurs[G->actif].nom);
+	if(G->joueurs[G->actif].score!=G->nbTresor){
+		printf("ton score est %d\n",G->joueurs[G->actif].score);
+		printf("Ta cible est %c\n", G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]);
+	}
+	else{
+		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
+	}
 	printf("fleches directionelles pour ce deplacer \n A tourner anti hor ,Z tourner hor, ENTER valider\n");
 	int res=-1;
-	while(res==-1){
+	while(res==-1 || res==27 || res==91){
 		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
             res = getchar();
             if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
 	}
-	
 	switch (res)
 		{
 		case 65:
@@ -214,7 +227,12 @@ bool menusolo(Game *G){
 			if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
 
 				deplacement(G->plateau);
-				joueur_tuile_solo(&G->joueurs[G->actif],G->plateau);
+				for (int i = 0; i < G->nbJoueurs; i++)
+				{
+					joueur_tuile_solo(&G->joueurs[i],G->plateau);
+				}
+				
+				
 				G->plateau->solopos[2]=(G->plateau->solopos[2]+1)%2;
 				return true;
 			}
@@ -235,7 +253,6 @@ int startgame(Game *G){
 	
 	while(G->run){
 		int posJ=G->joueurs[G->actif].position;
-		
 		system(EFFACER);
 		afficher(G);
 		if (state==1) {
@@ -244,8 +261,7 @@ int startgame(Game *G){
 			}
 		}
 		else if(state==2){
-			printf("mouvement du pion");
-			if (menujoueur(&(G->joueurs[G->actif]),G->plateau)){
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,&G->run,G->nbJoueurs)){
 				state=1;
 				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
 					incr_score(&(G->joueurs[G->actif]));        
@@ -269,9 +285,8 @@ Game *propgame(){
 	printf("le plateau a une taille de :");
 	int taille;
 	scanf("%d",&taille);
-	int nbTresor;
 	printf("Le nombre de tresor a trouver par personne est :");
-	scanf("%d",&nbTresor);
+	scanf("%d",&G->nbTresor);
 	int nbJoueurs;
 	printf("entrer le nombre de joueurs: ");
 	scanf("%d", &nbJoueurs);
@@ -279,10 +294,11 @@ Game *propgame(){
 	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
 	G->plateau->couleur=color;
-	initplat_alloc(G->plateau,taille, nbJoueurs, nbTresor);
+	initplat_alloc(G->plateau,taille, nbJoueurs, G->nbTresor);
 	fix(G->plateau);
 	G->actif=0;
 	create_joueurs(G, nbJoueurs);
+	attribute_tresor(G->plateau, G->joueurs, G->nbTresor);
 	return G;
 }
 

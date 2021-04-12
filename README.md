@@ -9,31 +9,30 @@ Alexandre DORCIVAL
 
 #definition des objets:<br>
   le plateau<br>
-    matrice de tuiles<br>X
-    fonction de définition<br>X
-    listes colones fixe <br>X
-    listes ligne fixe<br>X
+    X matrice de tuiles<br>
+    X fonction de définition<br>
+    X listes colones fixe <br>
+    X listes ligne fixe<br>
   les tuiles<br>
-    gerer les murs / directions<br>X
-    la proportion de tuiles (- T + L)<br>X
-    tuiles fixe ou mobile<br>X
+    X gerer les murs / directions<br>
+    X la proportion de tuiles (- T + L)<br>
+    X tuiles fixe ou mobile<br>
   les joueurs<br>
     conditions de victoire (retourner a ca case apres toutes les cartes)<br>
     trouver toutes les case que l'on peux acceder<br>
-    déplacement du joueur:<br>
-        textuel(methode basic non opti)<br>
-        déplacement clé directionnel<br>
+    X déplacement du joueur:<br>
+        X textuel(methode basic non opti)<br>
+        X déplacement clé directionnel<br>
         déplacement au cli (opti)<br>
   les trésors<br>
-    afficher une seule cartes<br>X
-    garder trace des cartes precedentes<br>X
+    X afficher une seule cartes<br>
+    X garder trace des cartes precedentes<br>
 #definition des règles:<br>
-  pousser<br>X
-  règles de déplacement<br>
-      les tuiles fixes<br>X
+ X pousser<br>X
+ X règles de déplacement<br>
+     X les tuiles fixes<br>X
       annuler action<br>
  #affichage:<br>
-    affichage ASCII<br>
-    affichage console pix (opt)<br>
+    X affichage ASCII<br>
     affichage Graph OpenGL SDL (opt)<br>
     

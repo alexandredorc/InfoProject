@@ -44,77 +44,68 @@ void create_joueurs(Game *G, int nbJoueurs){
 }
 
 
-bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
+bool menujoueur(Joueur* joueur, plateau* plateau){
 
 	printf("au tour de %s\n",joueur->nom);
-	if(joueur->score!=nbTresor){
-		printf("ton score est %d\n",joueur->score);
-		printf("Ta cible est %c\n", joueur->tresor[joueur->score]);
-	}
-	else{
-		printf("tu as récolté tous les trésors retourne vite à ta case!!");
-	}
-	printf("deplacement fléches directionelles, ENTER valider\n");
+	printf("1 top, 2 right, 3 down, 4 left, 5 valider\n");
 	
 	int posJ=joueur->position;
 	int x =joueur->x;
 	int y =joueur->y;
-	int res=-1;
-	while(res==-1 || res==27 || res==91){
-		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
-            res = getchar();
-            if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
-	}
+
+	int res;
+	scanf("%d",&res);
 	switch (res)
 	{
-	case 65:
+	case 1:
 		if (y!=0){
 			
 			int posC= plateau->grille[y-1][x];
 			
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[0] && plateau->TabTuiles[posC].passage[2]){
 				joueur->y--;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 67:
+		case 2:
 		if (x!=plateau->taille-1){
 
 
 			int posC= plateau->grille[y][x+1];
-			
+
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[1] && plateau->TabTuiles[posC].passage[3]){
 				joueur->x++;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 66:
+		case 3:
 		if (y!=plateau->taille-1){
 			
 			int posC= plateau->grille[y+1][x];
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[2] && plateau->TabTuiles[posC].passage[0]){
 				joueur->y++;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 68:
+		case 4:
 		if (x!=0){
 			int posC= plateau->grille[y][x-1];
+
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[3] && plateau->TabTuiles[posC].passage[1]){
 				joueur->x--;
 				joueur->position=posC;
 			}
 		}
 		break;
-	case 13:
+	case 5:
 		return true;
-	case 127:
-			*run=false;
-			return false;
-			break;
 	default:
 		break;
 	}

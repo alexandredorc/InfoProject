@@ -304,7 +304,9 @@ Game *propgame(){
 
 
 void resultat(Game *G){
-	
+	for(int i=0;i<G->nbJoueurs;i++){
+		printf("Le score de %s est %d\n", G->joueurs[i].nom, G->joueurs[i].score);
+	}
 }
 
 void endgame(Game *G){

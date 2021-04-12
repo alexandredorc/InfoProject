@@ -7,6 +7,7 @@
 #include "headers/joueur.h"
 #include "headers/tuiles.h"
 
+
 #define COULEUR_MUR1 "\033[48;5;21m"
 #define COULEUR_MUR2 "\033[48;5;27m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
@@ -112,7 +113,7 @@ bool menujoueur(Joueur* joueur, plateau* plateau){
 
 bool menusolo(Game *G){
 	printf("au tour de %s\n",G->joueurs[G->actif].nom);
-	printf("fleches directionelles pour ce déplacer \n A tourner anti hor ,Z tourner hor, ENTER valider\n");
+	printf("fleches directionelles pour ce deplacer \n A tourner anti hor ,Z tourner hor, ENTER valider\n");
 	int res=-1;
 	while(res==-1){
 		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 

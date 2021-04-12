@@ -267,10 +267,10 @@ int startgame(Game *G){
 					incr_score(&(G->joueurs[G->actif]));        
     			}
 				G->actif=(G->actif+1)%G->nbJoueurs;
-			}
-			if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
-				printf("C'est juste win en fait pour %s\n", G->joueurs[G->actif].nom);
-				G->run=false;
+				if (G->joueurs[G->actif].score==G->nbTresor && G->joueurs[G->actif].position==G->joueurs[G->actif].positionFinale){
+					printf("C'est juste win en fait pour %s\n", G->joueurs[G->actif].nom);
+					G->run=false;
+				}
 			}
 		}
 	}

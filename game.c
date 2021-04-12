@@ -333,8 +333,8 @@ void resultat(Game *G){
 
 void endgame(Game *G){
 	resultat(G);
-	free_joueurs(G->joueurs,G->nbJoueurs);
-    free_plat(G->plateau);
+	//free_joueurs(G->joueurs,G->nbJoueurs);
+    //free_plat(G->plateau);
 	free(G);
 }
 

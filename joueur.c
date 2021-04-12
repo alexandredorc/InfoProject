@@ -41,7 +41,6 @@ void attribute_tresor(plateau *p, Joueur *jou, int nombre){
     }
 }
 
-
 void joueur_tuile_solo(Joueur *j,plateau *plateau){
     int a;
     int b;

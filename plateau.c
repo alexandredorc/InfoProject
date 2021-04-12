@@ -19,9 +19,6 @@ int randomInt (int k)
 
 void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
 {
-    /*for(int j=0;j<24;j++){
-        P->liste_Tresor[j]=(char) 65+j;
-    }*/
     P->taille=taille;
     P->TabTuiles = malloc(((taille*taille)+1)*sizeof(*P->TabTuiles));
     P->grille = malloc(sizeof *P->grille * taille);
@@ -102,7 +99,6 @@ void free_plat(plateau* p)
 }
 
 int deplacement(plateau* p){
-    //direction 0=vers la gauche, 1=la droite
     p->lastPos[0]=p->solopos[0];
     p->lastPos[1]=p->solopos[1];
     p->lastPos[2]=p->solopos[2];

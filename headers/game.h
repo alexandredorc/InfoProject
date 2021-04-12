@@ -28,6 +28,4 @@ void endgame(Game *G);
 
 void afficher(Game *G);
 
-
-
 #endif

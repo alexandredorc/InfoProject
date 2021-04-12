@@ -6,7 +6,6 @@ struct plateau{
     int  **grille;
     tuile *TabTuiles;
     int solo;
-    char* liste_Tresor;
     bool *ligne_mobile;
     bool *colonne_mobile;
     int solopos[3];

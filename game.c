@@ -235,7 +235,7 @@ int startgame(Game *G){
 			}
 		}
 		else if(state==2){
-			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,&G->run)){
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau)){
 				state=1;
 				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
 					incr_score(&(G->joueurs[G->actif]));        

@@ -78,5 +78,4 @@ void free_joueurs(Joueur *j,int nbJoueurs){
     {
         free(j[i].tresor);
     }
-    free(j);
 }

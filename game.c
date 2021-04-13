@@ -316,7 +316,11 @@ Game *propgame(){
 	int color[4]={1,2,3,201};
 	G->couleur=color;
 	G->plateau=malloc(sizeof(plateau));
-	G->plateau->couleur=color;
+	for (int i = 0; i < 4; i++)
+	{
+		G->plateau->couleur[i]=color[i];
+	}
+	
 	initplat_alloc(G->plateau,taille, nbJoueurs, G->nbTresor);
 	fix(G->plateau);
 	G->actif=0;
@@ -333,8 +337,10 @@ void resultat(Game *G){
 
 void endgame(Game *G){
 	resultat(G);
-	//free_joueurs(G->joueurs,G->nbJoueurs);
-    //free_plat(G->plateau);
+	free_joueurs(G->joueurs,G->nbJoueurs);
+	free(G->joueurs);
+    free_plat(G->plateau);
+	free(G->plateau);
 	free(G);
 }
 
@@ -361,7 +367,7 @@ void afficher(Game *G){
 	int ** grille=G->plateau->grille;
 	int * soloposi= soloReal(G->plateau);
 	int solo=G->plateau->solo;
-	int offset=-20;
+	int offset=-10;
 	for(int i=offset;i<(taille+2)*3;i++){
 		for(int j=offset;j<(taille+2)*3;j++){
 			int x=i/3;

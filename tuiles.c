@@ -72,8 +72,3 @@ void init_Tuiles(tuile *tuile,char tresor, bool mobile)
         tuile->couleur=-1;
 }
 
-void free_tuile(tuile* t)
-{
-    free(t->passage);
-    free(t);
-}

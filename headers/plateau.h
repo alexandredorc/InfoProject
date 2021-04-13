@@ -9,7 +9,7 @@ struct plateau{
     bool *ligne_mobile;
     bool *colonne_mobile;
     int solopos[3];
-    int *couleur;
+    int couleur[4];
     char *listeTresor;
     int lastPos[3];
 };

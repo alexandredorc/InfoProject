@@ -89,13 +89,16 @@ void free_plat(plateau* p)
     free(p->colonne_mobile);
     free(p->listeTresor);
     for(int i=0;i<p->taille;i++){
-        free(p->grille[i]);
-        free_tuile(p->TabTuiles);
+        int *current=p->grille[i];
+        free(current);
     }
+    for (int i = 0; i < (p->taille*p->taille)-1; i++)
+    {
+        free(p->TabTuiles[i].passage);
+        
+    }
+    free(p->TabTuiles);
     free(p->grille);
-    free(p->couleur);
-    free(p->listeTresor);
-    free(p);
 }
 
 int deplacement(plateau* p){

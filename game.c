@@ -14,13 +14,14 @@
 #define COULEUR_PASSAGE "\033[48;5;252m"
 #define EFFACER "clear"
 
+//placement initiale de la tuile solo
 void resetsolo(plateau *P){
 	P->solopos[0]=1;//eloignement par rapport au plateau en haut à gauche
 	P->solopos[1]=0;//deplacement sur ligne ou colonne (1=colonne, 0=ligne)
 	P->solopos[2]=0;//quelle colonne ou ligne (numero de la colonne ou ligne)
 }
 
-
+//méthode de création des joueurs
 void create_joueurs(Game *G, int nbJoueurs){
 	G->nbJoueurs=nbJoueurs;
     Joueur *j=malloc(sizeof(Joueur)*G->nbJoueurs);
@@ -41,7 +42,7 @@ void create_joueurs(Game *G, int nbJoueurs){
     G->joueurs=j;
 }
 
-
+//méthode de déplacement des joueurs sur le plateau
 bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 
 	printf("au tour de %s\n",joueur->nom);
@@ -119,6 +120,7 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 	return false;
 }
 
+//méthode de déplacement de la tuile solo
 bool menusolo(Game *G){
 	printf("au tour de %s\n",G->joueurs[G->actif].nom);
 	if(G->joueurs[G->actif].score!=G->nbTresor){
@@ -271,6 +273,7 @@ bool menusolo(Game *G){
 	return false;
 }
 
+//Boucle de la partie et condition de victoire
 int startgame(Game *G){
 	resetsolo(G->plateau);
 	int state=1;
@@ -302,6 +305,7 @@ int startgame(Game *G){
 	return 0; 
 }
 
+//Initialisation de la partie
 Game *propgame(){
 	Game *G=malloc(sizeof(Game));
 	G->run=true;
@@ -329,12 +333,14 @@ Game *propgame(){
 	return G;
 }
 
+//Affichage des résultats finaux
 void resultat(Game *G){
 	for(int i=0;i<G->nbJoueurs;i++){
 		printf("Le score de %s est %d\n", G->joueurs[i].nom, G->joueurs[i].score);
 	}
 }
 
+//libération mémoire de tout ce qui reste avant fermeture du programme
 void endgame(Game *G){
 	resultat(G);
 	free_joueurs(G->joueurs,G->nbJoueurs);
@@ -344,6 +350,7 @@ void endgame(Game *G){
 	free(G);
 }
 
+//coordonnée de la tuile solo
 void soloReal(plateau *P,int* pos){
 	//[0] est la distance depuis 0;0 
 	//[1] si c'est une ligne ou colone 
@@ -358,6 +365,7 @@ void soloReal(plateau *P,int* pos){
 	}
 }
 
+//méthode d'affichage du jeu
 void afficher(Game *G){
 	int contraste=0;
 	int taille=G->plateau->taille;

@@ -5,6 +5,7 @@
 #include "headers/tuiles.h"
 #include "headers/plateau.h"
 
+//retourne un entier entre 0 et k
 int randomInt (int k)
 {
    static int first = 0;
@@ -17,6 +18,7 @@ int randomInt (int k)
    return (rand ()%k);
 }
 
+//allocation mémoire du plateau et de ses composants + placement aléatoire des trésors
 void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
 {
     P->taille=taille;
@@ -67,6 +69,8 @@ void initplat_alloc(plateau* P,int taille, int nbJoueur, int nbTresor)
     fix(P);
 }
 
+
+//modification de certaines tuiles pour les rendre immobile
 void fix(plateau *P ){
     for(int i=0;i<P->taille;i++){
         P->colonne_mobile[i]=true;
@@ -83,6 +87,7 @@ void fix(plateau *P ){
     
 }
 
+//libération mémoire du plateau et des tuiles
 void free_plat(plateau* p)
 {
     free(p->ligne_mobile);
@@ -101,6 +106,7 @@ void free_plat(plateau* p)
     free(p->grille);
 }
 
+//deplacement de la tuile solo autour du plateau 
 int deplacement(plateau* p){
     p->lastPos[0]=p->solopos[0];
     p->lastPos[1]=p->solopos[1];

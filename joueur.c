@@ -7,11 +7,12 @@
 #include "headers/game.h"
 #include <time.h>
 #define N 30
-
+//incrémentation du score
 void incr_score(Joueur *j){
     j->score+=1;
 }
 
+//mélange de la liste de trésor 
 void shuffle(char *array, int n)
 {
     srand(time(NULL));
@@ -28,6 +29,7 @@ void shuffle(char *array, int n)
     }
 }
 
+//attribution de trésor à chaque joueur
 void attribute_tresor(plateau *p, Joueur *jou, int nombre,int nbJoueur){
     
     shuffle(p->listeTresor,nombre);
@@ -41,6 +43,7 @@ void attribute_tresor(plateau *p, Joueur *jou, int nombre,int nbJoueur){
     }
 }
 
+//Expulsion du joueur à l'opposé du plateau
 void joueur_tuile_solo(Joueur *j,plateau *plateau){
     int a;
     int b;
@@ -73,6 +76,7 @@ void joueur_tuile_solo(Joueur *j,plateau *plateau){
     }
 }
 
+//libération mémoire des trésors
 void free_joueurs(Joueur *j,int nbJoueurs){
     for (int i = 0; i < nbJoueurs; i++)
     {

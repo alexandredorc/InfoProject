@@ -28,11 +28,11 @@ void shuffle(char *array, int n)
     }
 }
 
-void attribute_tresor(plateau *p, Joueur *jou, int nombre){
+void attribute_tresor(plateau *p, Joueur *jou, int nombre,int nbJoueur){
     
     shuffle(p->listeTresor,nombre);
     int k =0;
-    for(int i=0;i<nombre;i++){
+    for(int i=0;i<nbJoueur;i++){
         jou[i].tresor=malloc(sizeof(char)*nombre);
         for(int j=0;j<nombre;j++){
             jou[i].tresor[j]=p->listeTresor[k];

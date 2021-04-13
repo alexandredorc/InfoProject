@@ -325,7 +325,7 @@ Game *propgame(){
 	fix(G->plateau);
 	G->actif=0;
 	create_joueurs(G, nbJoueurs);
-	attribute_tresor(G->plateau, G->joueurs, G->nbTresor);
+	attribute_tresor(G->plateau, G->joueurs, G->nbTresor,G->nbJoueurs);
 	return G;
 }
 
@@ -344,8 +344,7 @@ void endgame(Game *G){
 	free(G);
 }
 
-int *soloReal(plateau *P){
-	int *pos=malloc(sizeof(int)*2);
+void soloReal(plateau *P,int* pos){
 	//[0] est la distance depuis 0;0 
 	//[1] si c'est une ligne ou colone 
 	//[2] si c'est dans la col ou ligne oposé ou non
@@ -357,7 +356,6 @@ int *soloReal(plateau *P){
 		pos[1]=P->solopos[0];
 		pos[0]=P->solopos[2]*(P->taille+1);
 	}
-	return pos;
 }
 
 void afficher(Game *G){
@@ -365,7 +363,8 @@ void afficher(Game *G){
 	int taille=G->plateau->taille;
 	tuile * TabTuiles=G->plateau->TabTuiles;
 	int ** grille=G->plateau->grille;
-	int * soloposi= soloReal(G->plateau);
+	int * soloposi=malloc(sizeof(int)*2);
+	soloReal(G->plateau,soloposi);
 	int solo=G->plateau->solo;
 	int offset=-10;
 	for(int i=offset;i<(taille+2)*3;i++){
@@ -492,4 +491,5 @@ void afficher(Game *G){
 		}
 		printf("\n");
 	}
+	free(soloposi);
 }

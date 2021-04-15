@@ -12,8 +12,11 @@ Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal:<br>
 
 Si vous voulez faire des modification et recompiler le jeu vous pouvez faire :
 ```
+//Pour Windows
 gcc *.c -o game
 ./game.exe
+//Pour Unix
+make
 ```
 Il est aussi possible d'analyser les pertes de mémoire avec la commande:
 ```

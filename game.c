@@ -12,7 +12,10 @@
 #define COULEUR_MUR2 "\033[48;5;27m"
 #define COULEUR_MUR_FIXE "\033[48;5;17m"
 #define COULEUR_PASSAGE "\033[48;5;252m"
-#define EFFACER "clear"
+#ifdef OSisWindows
+#else
+#define EFFACER "cls"
+#endif
 
 //placement initiale de la tuile solo
 void resetsolo(plateau *P){
@@ -53,67 +56,65 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 	else{
 		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
 	}
-	printf("deplacement fléches directionelles, ENTER valider\n");
+	printf("1 top, 2 right, 3 down, 4 left, 5 valider\n");
 	
 	int posJ=joueur->position;
 	int x =joueur->x;
 	int y =joueur->y;
-	int res=-1;
-	while(res==-1 || res==27 || res==91){
-		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
-            res = getchar();
-            if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
-	}
+
+	int res;
+	scanf("%d",&res);
 	switch (res)
 	{
-	case 65:
+	case 1:
 		if (y!=0){
 			
 			int posC= plateau->grille[y-1][x];
 			
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[0] && plateau->TabTuiles[posC].passage[2]){
 				joueur->y--;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 67:
+		case 2:
 		if (x!=plateau->taille-1){
 
 
 			int posC= plateau->grille[y][x+1];
-			
+
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[1] && plateau->TabTuiles[posC].passage[3]){
 				joueur->x++;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 66:
+		case 3:
 		if (y!=plateau->taille-1){
 			
 			int posC= plateau->grille[y+1][x];
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[2] && plateau->TabTuiles[posC].passage[0]){
 				joueur->y++;
 				joueur->position=posC;
 			}
 		}
 		break;
-		case 68:
+		case 4:
 		if (x!=0){
 			int posC= plateau->grille[y][x-1];
+
+			printf("test3 %d %d",posJ, posC);
 			if(plateau->TabTuiles[posJ].passage[3] && plateau->TabTuiles[posC].passage[1]){
 				joueur->x--;
 				joueur->position=posC;
 			}
 		}
 		break;
-	case 13:
+	case 5:
 		return true;
-	case 127:
-			*run=false;
-			return false;
-			break;
 	default:
 		break;
 	}
@@ -123,23 +124,12 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 //méthode de déplacement de la tuile solo
 bool menusolo(Game *G){
 	printf("au tour de %s\n",G->joueurs[G->actif].nom);
-	if(G->joueurs[G->actif].score!=G->nbTresor){
-		printf("ton score est %d\n",G->joueurs[G->actif].score);
-		printf("Ta cible est %c\n", G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]);
-	}
-	else{
-		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
-	}
-	printf("fleches directionelles pour ce deplacer \n A tourner anti hor ,Z tourner hor, ENTER valider\n");
-	int res=-1;
-	while(res==-1 || res==27 || res==91){
-		if(system("/bin/stty raw")) {exit(EXIT_FAILURE);} 
-            res = getchar();
-            if(system("/bin/stty cooked")) {exit(EXIT_FAILURE);}
-	}
+	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
+	int res; 
+	scanf("%d",&res);
 	switch (res)
 		{
-		case 65:
+		case 1:
 			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]>1)
 			{
 				G->plateau->solopos[0]-=1;
@@ -159,7 +149,7 @@ bool menusolo(Game *G){
 				G->plateau->solopos[2]=0;
 			}
 			break;
-		case 67:
+		case 2:
 			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]<G->plateau->taille)
 			{
 				G->plateau->solopos[0]+=1;
@@ -179,7 +169,7 @@ bool menusolo(Game *G){
 					G->plateau->solopos[2]=1;	
 			}
 			break;
-		case 66:
+		case 3:
 			if (G->plateau->solopos[1]==1 && G->plateau->solopos[0]<G->plateau->taille)
 			{
 				G->plateau->solopos[0]+=1;
@@ -200,7 +190,7 @@ bool menusolo(Game *G){
 			}
 			
 			break;
-		case 68:
+		case 4:
 			if (G->plateau->solopos[1]==0 && G->plateau->solopos[0]>1)
 			{
 				G->plateau->solopos[0]-=1;
@@ -220,10 +210,10 @@ bool menusolo(Game *G){
 				G->plateau->solopos[2]=0;
 			}
 			break;
-		case 122:
+		case 5:
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,true);
 			break;
-		case 97:
+		case 6:
 			tourner(&G->plateau->TabTuiles[G->plateau->solo],1,false);
 			break;
 		case 13:
@@ -266,6 +256,14 @@ bool menusolo(Game *G){
 		case 127:
 			G->run=false;
 			return false;
+		case 7:
+		if (G->plateau->colonne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==0 || G->plateau->ligne_mobile[G->plateau->solopos[0]-1] && G->plateau->solopos[1]==1){
+
+			deplacement(G->plateau);
+			joueur_tuile_solo(&G->joueurs[G->actif],G->plateau);
+			G->plateau->solopos[2]=(G->plateau->solopos[2]+1)%2;
+			return true;
+		}
 			break;
 		default:
 			break;
@@ -288,7 +286,7 @@ int startgame(Game *G){
 			}
 		}
 		else if(state==2){
-			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,&G->run,G->nbJoueurs)){
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau)){
 				state=1;
 				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
 					incr_score(&(G->joueurs[G->actif]));        

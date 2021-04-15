@@ -7,8 +7,9 @@ Nous avons décidé de réaliser le jeu "Le Labyrinthe", à la fois faisable sur
 <br>
 ## Comment lancer le jeu
 Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal:<br>
-* Pour Linux et MacOS, utiliser la branche main
-* Pour Windows, utiliser la branche Windows
+* Pour Linux et MacOS : branche main
+* Pour Windows : branche Windows
+
 Si vous voulez faire des modification et recompiler le jeu vous pouvez faire :
 ```
 gcc *.c -o game

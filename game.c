@@ -122,8 +122,15 @@ bool menujoueur(Joueur* joueur, plateau* plateau, bool *run,int nbTresor){
 }
 
 //méthode de déplacement de la tuile solo
-bool menusolo(Game *G){
+bool menusolo(Game *G, Joueur* joueur, int nbTresor){
 	printf("au tour de %s\n",G->joueurs[G->actif].nom);
+	if(joueur->score!=nbTresor){
+		printf("ton score est %d\n",joueur->score);
+		printf("Ta cible est %c\n", joueur->tresor[joueur->score]);
+	}
+	else{
+		printf("tu as récolté tous les trésors retourne vite à ta case!!\n");
+	}
 	printf("1 top, 2 right, 3 down, 4 left, 5 tourner hor ,6 tourner anti hor, 7 valider\n");
 	int res; 
 	scanf("%d",&res);
@@ -281,12 +288,12 @@ int startgame(Game *G){
 		system(EFFACER);
 		afficher(G);
 		if (state==1) {
-			if (menusolo(G)){
+			if (menusolo(G, &(G->joueurs[G->actif]), G->nbTresor)){
 				state=2;
 			}
 		}
 		else if(state==2){
-			if (menujoueur(&(G->joueurs[G->actif]),G->plateau,G->actif, G->nbTresor)){
+			if (menujoueur(&(G->joueurs[G->actif]),G->plateau, &G->run, G->nbTresor)){
 				state=1;
 				if(G->plateau->TabTuiles[posJ].tresor==G->joueurs[G->actif].tresor[G->joueurs[G->actif].score]){
 					incr_score(&(G->joueurs[G->actif]));        

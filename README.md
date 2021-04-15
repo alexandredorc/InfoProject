@@ -1,11 +1,9 @@
-
-# InfoProject
-<h1>Projet Jeu de Plateau IMT Nord Europe</h1>
+# Projet Jeu de Plateau IMT Nord Europe
 projet d'info:
 Guillaume FAURE
 William NGUYEN
 Alexandre DORCIVAL
-
+## Le Labyrinthe
 #Stages: 
 
 #definition des objets:<br>

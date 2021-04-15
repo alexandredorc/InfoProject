@@ -1,9 +1,21 @@
 # Projet Jeu de Plateau IMT Nord Europe
-projet d'info:
-Guillaume FAURE
-William NGUYEN
-Alexandre DORCIVAL
-## Le Labyrinthe
+## Introduction
+Ce projet de développement d'un jeu de plateau en C fonctionnel sur terminal a été réalisé par Guillaume FAURE, Alexandre DORCIVAL et William NGUYEN dans le cadre de notre cursus à l'IMT.<br>
+Nous avons décidé de réaliser le jeu "Le Labyrinthe", à la fois faisable sur terminal, très intéressant et amusant.
+## Comment lancer le jeu
+Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal. Attention, le jeu n'est compatible qu'avec des systèmes d'exploitation Linux ou MacOS, pour la version Windows, la branche "guillaume" est utilisable mais pratique d'utilisation.
+Si vous voulez faire des modification et recompiler le jeu vous pouvez faire :
+"""
+gcc *.c -o game
+./game.exe
+"""
+Il est aussi possible d'analyser les pertes de mémoire avec la commande:
+"""
+valgrind --leak-check=full ./game.exe
+"""
+## Les règles du Labyrinthe
+
+
 #Stages: 
 
 #definition des objets:<br>

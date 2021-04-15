@@ -5,14 +5,14 @@ Nous avons décidé de réaliser le jeu "Le Labyrinthe", à la fois faisable sur
 ## Comment lancer le jeu
 Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal. Attention, le jeu n'est compatible qu'avec des systèmes d'exploitation Linux ou MacOS, pour la version Windows, la branche "guillaume" est utilisable mais pratique d'utilisation.
 Si vous voulez faire des modification et recompiler le jeu vous pouvez faire :
-"""
+'''
 gcc *.c -o game
 ./game.exe
-"""
+'''
 Il est aussi possible d'analyser les pertes de mémoire avec la commande:
-"""
+'''
 valgrind --leak-check=full ./game.exe
-"""
+'''
 ## Les règles du Labyrinthe
 
 

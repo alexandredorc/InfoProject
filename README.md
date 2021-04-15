@@ -1,5 +1,6 @@
 
 # InfoProject
+<h1>Projet Jeu de Plateau IMT Nord Europe</h1>
 projet d'info:
 Guillaume FAURE
 William NGUYEN

@@ -6,7 +6,10 @@ Nous avons décidé de réaliser le jeu "Le Labyrinthe", à la fois faisable sur
 ![alt text](https://www.regle-du-jeu.fr/wp-content/uploads/2020/11/regles-du-jeu-Labyrinthe.jpg "Jeu du labyrinthe")
 <br>
 ## Comment lancer le jeu
-Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal. Attention, le jeu n'est compatible qu'avec des systèmes d'exploitation Linux ou MacOS, pour la version Windows, la branche "guillaume" est utilisable mais pratique d'utilisation.
+Pour lancer le jeu, le simple fichier game.exe lance le jeu sur le terminal:<br>
+* Pour Linux et MacOS : branche main
+* Pour Windows : branche Windows
+
 Si vous voulez faire des modification et recompiler le jeu vous pouvez faire :
 ```
 gcc *.c -o game
